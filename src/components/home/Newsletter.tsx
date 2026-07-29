@@ -5,12 +5,50 @@ import { Mail } from "lucide-react";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Wire this up to your email provider (Resend, Mailchimp, ConvertKit, etc.)
-    setStatus("success");
+
+    const trimmedEmail = email.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(trimmedEmail)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setStatus("idle");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmedEmail }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        setStatus("error");
+        setMessage(data.message || "We could not complete your subscription.");
+        return;
+      }
+
+      setStatus("success");
+      setMessage(data.message || "Thanks for subscribing!");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setMessage("We could not complete your subscription. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -23,10 +61,11 @@ export default function Newsletter() {
         <p className="max-w-md text-sm text-navy-500">
           Subscribe to get new scholarship opportunities delivered to your inbox.
         </p>
+
         {status === "success" ? (
-          <p className="text-sm font-medium text-navy-800">Thanks for subscribing! 🎉</p>
+          <p className="text-sm font-medium text-navy-800">{message}</p>
         ) : (
-          <form onSubmit={handleSubmit} className="flex w-full max-w-md gap-2">
+          <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
             <label htmlFor="newsletter-email" className="sr-only">Email address</label>
             <input
               id="newsletter-email"
@@ -37,10 +76,14 @@ export default function Newsletter() {
               placeholder="you@example.com"
               className="w-full rounded-md border border-navy-200 px-4 py-2.5 text-sm outline-none focus:border-navy-500"
             />
-            <button type="submit" className="btn-primary shrink-0">
-              Subscribe
+            <button type="submit" className="btn-primary shrink-0" disabled={isSubmitting}>
+              {isSubmitting ? "Subscribing..." : "Subscribe"}
             </button>
           </form>
+        )}
+
+        {message && status === "error" && (
+          <p className="text-sm font-medium text-red-600">{message}</p>
         )}
       </div>
     </section>

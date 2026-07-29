@@ -1,0 +1,39 @@
+import { defineField, defineType } from "sanity";
+
+export default defineType({
+  name: "subscriber",
+  title: "Subscriber",
+  type: "document",
+  fields: [
+    defineField({
+      name: "email",
+      title: "Email",
+      type: "string",
+      validation: (Rule) => Rule.required().email(),
+    }),
+    defineField({
+      name: "subscribedAt",
+      title: "Subscribed At",
+      type: "datetime",
+      initialValue: () => new Date().toISOString(),
+    }),
+    defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      initialValue: "active",
+      options: {
+        list: [
+          { title: "Active", value: "active" },
+          { title: "Unsubscribed", value: "unsubscribed" },
+        ],
+      },
+    }),
+  ],
+  preview: {
+    select: {
+      title: "email",
+      subtitle: "status",
+    },
+  },
+});
