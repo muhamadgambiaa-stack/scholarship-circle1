@@ -19,12 +19,21 @@ const columns = [
       { href: "/contact", label: "Contact" },
     ],
   },
+  {
+    title: "Legal",
+    links: [
+      { href: "/privacy-policy", label: "Privacy Policy" },
+      { href: "/terms-of-service", label: "Terms of Service" },
+      { href: "/cookie-policy", label: "Cookie Policy" },
+      { href: "/disclaimer", label: "Disclaimer" },
+    ],
+  },
 ];
 
 export default function Footer() {
   return (
     <footer className="border-t border-navy-100 bg-navy-950 text-navy-100">
-      <div className="container-page grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container-page grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 lg:grid-cols-5">
         <div>
           <span className="font-serif text-lg font-bold text-white">The Scholarship Circle</span>
           <p className="mt-3 text-sm text-navy-300">

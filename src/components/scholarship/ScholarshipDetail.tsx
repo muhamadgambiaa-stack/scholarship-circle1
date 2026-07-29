@@ -5,6 +5,7 @@ import { urlForImage } from "@/sanity/lib/image";
 import { DEGREE_LEVEL_LABELS, FUNDING_TYPE_LABELS, type Scholarship } from "@/types/scholarship";
 import { formatDate, deadlineStatus } from "@/lib/utils";
 import Badge from "@/components/ui/Badge";
+import ShareButton from "@/components/ui/ShareButton";
 import ScholarshipCard from "./ScholarshipCard";
 
 export default function ScholarshipDetail({ scholarship }: { scholarship: Scholarship }) {
@@ -32,7 +33,17 @@ export default function ScholarshipDetail({ scholarship }: { scholarship: Schola
           ))}
         </div>
 
-        <h1 className="font-serif text-3xl font-bold text-navy-900 sm:text-4xl">{scholarship.title}</h1>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <h1 className="font-serif text-3xl font-bold text-navy-900 sm:text-4xl">{scholarship.title}</h1>
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <ShareButton
+            title={scholarship.title}
+            description={scholarship.excerpt || scholarship.seoDescription || scholarship.title}
+            className="inline-flex items-center justify-center rounded-md border border-navy-300 bg-gold-500 px-4 py-2 text-sm font-semibold text-navy-900 shadow-sm transition hover:bg-gold-400"
+            label="Share this scholarship"
+          />
+        </div>
         <p className="mt-2 text-navy-500">
           {scholarship.country?.name}
           {scholarship.university ? ` · ${scholarship.university}` : ""}

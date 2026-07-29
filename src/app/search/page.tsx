@@ -12,9 +12,10 @@ export const metadata: Metadata = buildMetadata({ title: "Search Scholarships", 
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams?: { q?: string | string[] };
 }) {
-  const term = searchParams.q?.trim() ?? "";
+  const rawTerm = searchParams?.q;
+  const term = Array.isArray(rawTerm) ? rawTerm[0]?.trim() ?? "" : rawTerm?.trim() ?? "";
   const results = term
     ? await client.fetch<ScholarshipCardType[]>(searchScholarshipsQuery, { term }).catch(() => [])
     : [];

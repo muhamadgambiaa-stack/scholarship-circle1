@@ -11,7 +11,8 @@ import WhatsAppChannel from "@/components/home/WhatsAppChannel";
 import ConsultationCTA from "@/components/home/ConsultationCTA";
 import Newsletter from "@/components/home/Newsletter";
 
-export const revalidate = 3600; // ISR: refresh hourly, new posts appear without a redeploy
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function HomePage() {
   const data = await client.fetch<HomepageData>(homepageQuery).catch(

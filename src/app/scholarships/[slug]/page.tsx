@@ -9,7 +9,8 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import StructuredData from "@/components/seo/StructuredData";
 import { buildMetadata, breadcrumbJsonLd, scholarshipJsonLd, SITE_URL } from "@/lib/seo";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const slugs = await client.fetch<string[]>(allScholarshipSlugsQuery).catch(() => []);

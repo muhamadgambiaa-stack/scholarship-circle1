@@ -78,12 +78,14 @@ export const postBySlugQuery = groq`
   }
 `;
 
-// Simple multi-field search across title, university, provider, country name
+// Search scholarships across title, university, provider, country, degree level, and funding type.
 export const searchScholarshipsQuery = groq`
   *[_type == "scholarship" && (
     title match $term + "*" ||
     university match $term + "*" ||
     provider match $term + "*" ||
-    country->name match $term + "*"
+    country->name match $term + "*" ||
+    degreeLevel match $term + "*" ||
+    fundingType match $term + "*"
   )] | order(publishedAt desc) [0...20] { ${scholarshipCardFields} }
 `;

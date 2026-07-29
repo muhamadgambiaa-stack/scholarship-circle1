@@ -26,12 +26,13 @@ if (!isSanityConfigured) {
 // still wrapped in .catch() and will simply resolve to empty data if the config is wrong.
 const resolvedProjectId = projectId || "placeholder";
 
-// Read-only client for public pages. Uses CDN caching for speed.
+// Read-only client for public pages. We disable the CDN cache so published content
+// appears immediately after a Sanity publish or webhook revalidation.
 export const client = createClient({
   projectId: resolvedProjectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: false,
   perspective: "published",
 });
 

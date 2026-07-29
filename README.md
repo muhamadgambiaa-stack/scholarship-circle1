@@ -28,6 +28,7 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-07-01
 SANITY_API_READ_TOKEN=       # only needed if you add draft previews later
+SANITY_REVALIDATE_SECRET=    # shared secret for Sanity webhook revalidation
 NEXT_PUBLIC_SITE_URL=https://thescholarshipcircle.com
 ```
 
@@ -71,8 +72,10 @@ Nothing is hardcoded — you'll want to create at least:
 - **Vercel** (recommended): import the repo, add the same env vars from `.env.local` in the
   Vercel dashboard, deploy.
 - **Netlify**: same idea — set the env vars, use the Next.js runtime plugin.
-- Optional: add a Sanity webhook (Settings → API → Webhooks) that hits your host's deploy hook
-  on publish, so changes go live immediately instead of waiting for the hourly revalidation.
+- Optional but recommended: add a Sanity webhook (Settings → API → Webhooks) that calls
+  https://your-domain.com/api/revalidate on document publish/update, using the same
+  secret you set in SANITY_REVALIDATE_SECRET. This makes new content appear immediately
+  instead of waiting for the hourly revalidation window.
 
 ## Project structure
 

@@ -7,7 +7,8 @@ import SearchBar from "@/components/home/SearchBar";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { buildMetadata } from "@/lib/seo";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = buildMetadata({
   title: "All Scholarships",

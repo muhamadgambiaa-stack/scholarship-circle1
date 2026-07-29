@@ -7,7 +7,8 @@ import ScholarshipCard from "@/components/scholarship/ScholarshipCard";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { buildMetadata } from "@/lib/seo";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const categories = await client.fetch<CategoryRef[]>(allCategoriesQuery).catch(() => []);

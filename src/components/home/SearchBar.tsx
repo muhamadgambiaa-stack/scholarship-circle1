@@ -1,18 +1,30 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { cx } from "@/lib/utils";
 
 export default function SearchBar({ variant = "default" }: { variant?: "hero" | "default" }) {
-  const [term, setTerm] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [term, setTerm] = useState("");
+
+  useEffect(() => {
+    const q = searchParams?.get("q") ?? "";
+    setTerm(q);
+  }, [searchParams]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!term.trim()) return;
-    router.push(`/search?q=${encodeURIComponent(term.trim())}`);
+    const trimmed = term.trim();
+
+    if (!trimmed) {
+      router.push("/search");
+      return;
+    }
+
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
   }
 
   return (
