@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 
 import "./globals.css";
 
@@ -13,7 +12,12 @@ export const metadata: Metadata = {
     title: "The Scholarship Circle: Genuine Scholarship Opportunities Worldwide",
     path: "/",
   }),
+
   metadataBase: new URL(SITE_URL),
+
+  other: {
+    "google-adsense-account": "ca-pub-9760558565445583",
+  },
 };
 
 export default function RootLayout({
@@ -23,16 +27,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <Script
-          id="adsense-script"
-          strategy="beforeInteractive"
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760558565445583"
-          crossOrigin="anonymous"
-        />
-      </head>
-
       <body className="flex min-h-screen flex-col">
         <AnnouncementBar />
         <Header />
