@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+
 import "./globals.css";
+
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
@@ -14,23 +16,33 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          id="adsense-script"
+          strategy="beforeInteractive"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760558565445583"
+          crossOrigin="anonymous"
+        />
+      </head>
+
       <body className="flex min-h-screen flex-col">
+        <AnnouncementBar />
+        <Header />
 
-  <Script
-    async
-    strategy="afterInteractive"
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760558565445583"
-    crossOrigin="anonymous"
-  />
+        <main className="flex-1">
+          {children}
+        </main>
 
-  <AnnouncementBar />
-  <Header />
-  <main className="flex-1">{children}</main>
-  <Footer />
-</body>
+        <Footer />
+      </body>
     </html>
   );
 }
