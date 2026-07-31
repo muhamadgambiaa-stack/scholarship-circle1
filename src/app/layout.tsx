@@ -10,13 +10,101 @@ import { buildMetadata, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
   ...buildMetadata({
-    title: "The Scholarship Circle: Genuine Scholarship Opportunities Worldwide",
+    title: "The Scholarship Circle | Genuine Scholarship Opportunities Worldwide",
+    description:
+      "The Scholarship Circle helps students discover genuine, fully funded scholarships, fellowships, internships, exchange programs, grants, and study abroad opportunities from universities, governments, and international organizations worldwide.",
     path: "/",
   }),
 
   metadataBase: new URL(SITE_URL),
 
   applicationName: "The Scholarship Circle",
+
+  keywords: [
+    "The Scholarship Circle",
+    "Scholarship Circle",
+    "Scholarships",
+    "Fully Funded Scholarships",
+    "International Scholarships",
+    "Study Abroad",
+    "Study Abroad Opportunities",
+    "Scholarship Opportunities",
+    "Scholarships for International Students",
+    "Scholarships for African Students",
+    "Bachelor Scholarships",
+    "Bachelor's Scholarships",
+    "Masters Scholarships",
+    "Master's Scholarships",
+    "MBA Scholarships",
+    "PhD Scholarships",
+    "Doctoral Scholarships",
+    "Postdoctoral Fellowships",
+    "Research Scholarships",
+    "Research Grants",
+    "University Scholarships",
+    "College Scholarships",
+    "Government Scholarships",
+    "Merit Scholarships",
+    "Need-Based Scholarships",
+    "Scholarships Without IELTS",
+    "Scholarships Without TOEFL",
+    "Fully Funded Masters",
+    "Fully Funded PhD",
+    "Scholarships in USA",
+    "Scholarships in Canada",
+    "Scholarships in UK",
+    "Scholarships in Germany",
+    "Scholarships in Australia",
+    "Scholarships in Japan",
+    "Scholarships in China",
+    "Scholarships in South Korea",
+    "Scholarships in Italy",
+    "Scholarships in France",
+    "Scholarships in Netherlands",
+    "Scholarships in Switzerland",
+    "Scholarships in indonesia",
+    "Scholarships in New Zealand",
+    "Erasmus Mundus Scholarship",
+    "Chevening Scholarship",
+    "Commonwealth Scholarship",
+    "DAAD Scholarship",
+    "MEXT Scholarship",
+    "Fulbright Scholarship",
+    "Rhodes Scholarship",
+    "Gates Cambridge Scholarship",
+    "Knight-Hennessy Scholarship",
+    "Stipendium Hungaricum",
+    "McCall MacBain Scholarship",
+    "Jefferson Scholars",
+    "Internships",
+    "International Internships",
+    "Fellowships",
+    "Youth Opportunities",
+    "Exchange Programs",
+    "Student Exchange",
+    "University Admissions",
+    "Scholarship Application",
+    "Scholarship Deadlines",
+    "Scholarship News",
+    "Verified Scholarships",
+    "Genuine Scholarships",
+    "Muhammed J bah scholarship circle",
+  ],
+
+  creator: "Muhammed J Bah",
+
+  authors: [
+    {
+      name: "Muhammed J Bah",
+      url: "https://thescholarshipcircle.com/founder",
+    },
+  ],
+
+  publisher: "The Scholarship Circle",
+
+  category: "Education",
+
+  classification: "Scholarships, Education, Study Abroad",
 
   other: {
     "google-adsense-account": "ca-pub-9760558565445583",
@@ -35,6 +123,9 @@ export default function RootLayout({
         "@type": "Organization",
         "@id": "https://thescholarshipcircle.com/#organization",
         name: "The Scholarship Circle",
+        alternateName: "Scholarship Circle",
+        description:
+          "Helping students around the world discover genuine scholarship opportunities and study abroad information.",
         url: "https://thescholarshipcircle.com",
         logo: {
           "@type": "ImageObject",
@@ -49,16 +140,14 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": "https://thescholarshipcircle.com/#website",
         name: "The Scholarship Circle",
+        alternateName: "Scholarship Circle",
+        description:
+          "A global scholarship platform helping students discover verified scholarships, fellowships, internships, and study abroad opportunities.",
         url: "https://thescholarshipcircle.com",
+        inLanguage: "en",
         publisher: {
           "@id": "https://thescholarshipcircle.com/#organization",
-        },
-        potentialAction: {
-          "@type": "SearchAction",
-          target:
-            "https://thescholarshipcircle.com/search?q={search_term_string}",
-          "query-input": "required name=search_term_string",
-        },
+        }
       },
     ],
   };
@@ -66,7 +155,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){
@@ -83,7 +171,6 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Organization + Website Schema */}
         <Script
           id="organization-schema"
           type="application/ld+json"
@@ -94,7 +181,6 @@ export default function RootLayout({
       </head>
 
       <body className="flex min-h-screen flex-col">
-        {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MQL82SLQ"
@@ -108,6 +194,7 @@ export default function RootLayout({
         </noscript>
 
         <AnnouncementBar />
+
         <Header />
 
         <main className="flex-1">{children}</main>
