@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 
   metadataBase: new URL(SITE_URL),
 
+  applicationName: "The Scholarship Circle",
+
   other: {
     "google-adsense-account": "ca-pub-9760558565445583",
   },
@@ -26,6 +28,41 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://thescholarshipcircle.com/#organization",
+        name: "The Scholarship Circle",
+        url: "https://thescholarshipcircle.com",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://thescholarshipcircle.com/icon.png",
+        },
+        founder: {
+          "@type": "Person",
+          name: "Muhammed J Bah",
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://thescholarshipcircle.com/#website",
+        name: "The Scholarship Circle",
+        url: "https://thescholarshipcircle.com",
+        publisher: {
+          "@id": "https://thescholarshipcircle.com/#organization",
+        },
+        potentialAction: {
+          "@type": "SearchAction",
+          target:
+            "https://thescholarshipcircle.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string",
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en">
       <head>
@@ -45,6 +82,15 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-MQL82SLQ');
           `}
         </Script>
+
+        {/* Organization + Website Schema */}
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
       </head>
 
       <body className="flex min-h-screen flex-col">
@@ -64,9 +110,7 @@ export default function RootLayout({
         <AnnouncementBar />
         <Header />
 
-        <main className="flex-1">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
 
         <Footer />
       </body>
