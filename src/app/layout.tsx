@@ -20,21 +20,36 @@ export const metadata: Metadata = {
 
   applicationName: "The Scholarship Circle",
 
+  creator: "Muhammed J Bah",
+
+  authors: [
+    {
+      name: "Muhammed J Bah",
+      url: "https://thescholarshipcircle.com/founder",
+    },
+  ],
+
+  publisher: "The Scholarship Circle",
+
+  category: "Education",
+
+  classification: "Scholarships, Education, Study Abroad",
+
   keywords: [
     "The Scholarship Circle",
     "Scholarship Circle",
     "Scholarships",
+    "Scholarship Opportunities",
     "Fully Funded Scholarships",
     "International Scholarships",
     "Study Abroad",
-    "Study Abroad Opportunities",
-    "Scholarship Opportunities",
+    "Study Abroad Scholarships",
     "Scholarships for International Students",
     "Scholarships for African Students",
     "Bachelor Scholarships",
     "Bachelor's Scholarships",
-    "Masters Scholarships",
     "Master's Scholarships",
+    "Masters Scholarships",
     "MBA Scholarships",
     "PhD Scholarships",
     "Doctoral Scholarships",
@@ -42,7 +57,6 @@ export const metadata: Metadata = {
     "Research Scholarships",
     "Research Grants",
     "University Scholarships",
-    "College Scholarships",
     "Government Scholarships",
     "Merit Scholarships",
     "Need-Based Scholarships",
@@ -62,7 +76,7 @@ export const metadata: Metadata = {
     "Scholarships in France",
     "Scholarships in Netherlands",
     "Scholarships in Switzerland",
-    "Scholarships in indonesia",
+    "Scholarships in Indonesia",
     "Scholarships in New Zealand",
     "Erasmus Mundus Scholarship",
     "Chevening Scholarship",
@@ -83,28 +97,12 @@ export const metadata: Metadata = {
     "Exchange Programs",
     "Student Exchange",
     "University Admissions",
-    "Scholarship Application",
+    "Scholarship Applications",
     "Scholarship Deadlines",
     "Scholarship News",
     "Verified Scholarships",
     "Genuine Scholarships",
-    "Muhammed J bah scholarship circle",
   ],
-
-  creator: "Muhammed J Bah",
-
-  authors: [
-    {
-      name: "Muhammed J Bah",
-      url: "https://thescholarshipcircle.com/founder",
-    },
-  ],
-
-  publisher: "The Scholarship Circle",
-
-  category: "Education",
-
-  classification: "Scholarships, Education, Study Abroad",
 
   other: {
     "google-adsense-account": "ca-pub-9760558565445583",
@@ -116,38 +114,44 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const organizationSchema = {
+  const siteSchema = {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://thescholarshipcircle.com/#website",
+        name: "The Scholarship Circle",
+        alternateName: [
+          "Scholarship Circle",
+          "thescholarshipcircle.com",
+        ],
+        url: "https://thescholarshipcircle.com/",
+        description:
+          "The Scholarship Circle is a global scholarship platform helping students discover scholarships, fellowships, internships, exchange programs, and study abroad opportunities.",
+        inLanguage: "en",
+        publisher: {
+          "@id": "https://thescholarshipcircle.com/#organization",
+        },
+      },
+
       {
         "@type": "Organization",
         "@id": "https://thescholarshipcircle.com/#organization",
         name: "The Scholarship Circle",
         alternateName: "Scholarship Circle",
+        url: "https://thescholarshipcircle.com/",
         description:
-          "Helping students around the world discover genuine scholarship opportunities and study abroad information.",
-        url: "https://thescholarshipcircle.com",
+          "The Scholarship Circle helps students around the world discover genuine scholarship opportunities and study abroad information.",
         logo: {
           "@type": "ImageObject",
-          url: "https://thescholarshipcircle.com/icon.png",
+          "@id": "https://thescholarshipcircle.com/#logo",
+          url: "https://thescholarshipcircle.com/logo.png",
+          contentUrl: "https://thescholarshipcircle.com/logo.png",
         },
         founder: {
           "@type": "Person",
           name: "Muhammed J Bah",
         },
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://thescholarshipcircle.com/#website",
-        name: "The Scholarship Circle",
-        alternateName: "Scholarship Circle",
-        description:
-          "A global scholarship platform helping students discover verified scholarships, fellowships, internships, and study abroad opportunities.",
-        url: "https://thescholarshipcircle.com",
-        inLanguage: "en",
-        publisher: {
-          "@id": "https://thescholarshipcircle.com/#organization",
-        }
       },
     ],
   };
@@ -155,32 +159,40 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){
               w[l]=w[l]||[];
-              w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});
+              w[l].push({
+                'gtm.start': new Date().getTime(),
+                event:'gtm.js'
+              });
+
               var f=d.getElementsByTagName(s)[0],
                   j=d.createElement(s),
                   dl=l!='dataLayer'?'&l='+l:'';
+
               j.async=true;
               j.src='https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+
               f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-MQL82SLQ');
           `}
         </Script>
 
+        {/* Google Site Name + Organization Schema */}
         <Script
-          id="organization-schema"
+          id="site-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
+            __html: JSON.stringify(siteSchema),
           }}
         />
       </head>
 
       <body className="flex min-h-screen flex-col">
+        {/* Google Tag Manager - noscript */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MQL82SLQ"
