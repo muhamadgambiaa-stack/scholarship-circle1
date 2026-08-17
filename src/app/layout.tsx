@@ -5,7 +5,6 @@ import "./globals.css";
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import { buildMetadata, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -204,8 +203,6 @@ export default function RootLayout({
             }}
           />
         </noscript>
-
-        <AnnouncementBar />
 
         <Header />
 
