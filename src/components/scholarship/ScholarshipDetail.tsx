@@ -96,7 +96,7 @@ export default function ScholarshipDetail({ scholarship }: { scholarship: Schola
             <InfoRow label="Provider" value={scholarship.provider} />
             <InfoRow
               label="Degree Level"
-              value={scholarship.degreeLevel ? DEGREE_LEVEL_LABELS[scholarship.degreeLevel] : undefined}
+              value={scholarship.degreeLevels ? DEGREE_LEVEL_LABELS[scholarship.degreeLevel] : undefined}
             />
             <InfoRow
               label="Funding Type"

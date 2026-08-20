@@ -20,7 +20,10 @@ export interface ScholarshipCard {
   slug: string;
   excerpt?: string;
   featuredImage?: Image;
-  degreeLevel?: string;
+
+  // Multiple degree levels can now be selected in Sanity
+  degreeLevels?: string[];
+
   fundingType?: string;
   deadline?: string;
   university?: string;
@@ -65,17 +68,34 @@ export interface HomepageData {
 }
 
 export const DEGREE_LEVEL_LABELS: Record<string, string> = {
+  associate: "Associate Degree",
+  diploma: "Diploma",
   bachelors: "Bachelor's",
   masters: "Master's",
+  mba: "MBA",
   phd: "PhD",
-  fellowship: "Fellowship",
-  internship: "Internship",
+  postdoctoral: "Postdoctoral",
+  "non-degree": "Non-Degree Program",
+  certificate: "Certificate Program",
   exchange: "Exchange Program",
+  internship: "Internship",
+  fellowship: "Fellowship",
   competition: "Competition",
+  research: "Research Program",
+  "summer-school": "Summer School",
+  workshop: "Workshop",
+  conference: "Conference",
+  training: "Training Program",
+  volunteer: "Volunteer Program",
 };
 
 export const FUNDING_TYPE_LABELS: Record<string, string> = {
   "fully-funded": "Fully Funded",
   "partially-funded": "Partially Funded",
   "tuition-only": "Tuition Only",
+  "fully-sponsored": "Fully Sponsored",
+  "paid-program": "Paid Program",
+  "free-program": "Free Program",
+  "self-funded": "Self Funded",
+  stipend: "Stipend Available",
 };

@@ -7,7 +7,7 @@ const scholarshipCardFields = groq`
   "slug": slug.current,
   excerpt,
   featuredImage,
-  degreeLevel,
+  degreeLevels,
   fundingType,
   deadline,
   university,
@@ -51,41 +51,72 @@ export const scholarshipsByCategoryQuery = groq`
 `;
 
 export const allCountriesQuery = groq`
-  *[_type == "country"] | order(name asc) { _id, name, "slug": slug.current, flagImage, description }
+  *[_type == "country"] | order(name asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    flagImage,
+    description
+  }
 `;
 
 export const countryBySlugQuery = groq`
-  *[_type == "country" && slug.current == $slug][0]{ _id, name, "slug": slug.current, flagImage, description }
+  *[_type == "country" && slug.current == $slug][0]{
+    _id,
+    name,
+    "slug": slug.current,
+    flagImage,
+    description
+  }
 `;
 
 export const allCategoriesQuery = groq`
-  *[_type == "category"] | order(name asc) { _id, name, "slug": slug.current, description, icon }
+  *[_type == "category"] | order(name asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    icon
+  }
 `;
 
 export const categoryBySlugQuery = groq`
-  *[_type == "category" && slug.current == $slug][0]{ _id, name, "slug": slug.current, description, icon }
+  *[_type == "category" && slug.current == $slug][0]{
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    icon
+  }
 `;
 
 export const allPostsQuery = groq`
   *[_type == "post"] | order(publishedAt desc) {
-    _id, title, "slug": slug.current, excerpt, featuredImage, publishedAt
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    featuredImage,
+    publishedAt
   }
 `;
 
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0]{
-    ..., "slug": slug.current
+    ...,
+    "slug": slug.current
   }
 `;
 
-// Search scholarships across title, university, provider, country, degree level, and funding type.
+// Search scholarships across title, university, provider, country,
+// degree levels, and funding type.
 export const searchScholarshipsQuery = groq`
   *[_type == "scholarship" && (
     title match $term + "*" ||
     university match $term + "*" ||
     provider match $term + "*" ||
     country->name match $term + "*" ||
-    degreeLevel match $term + "*" ||
+    degreeLevels[] match $term + "*" ||
     fundingType match $term + "*"
   )] | order(publishedAt desc) [0...20] { ${scholarshipCardFields} }
 `;
