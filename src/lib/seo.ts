@@ -74,3 +74,67 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
     })),
   };
 }
+
+export function articleJsonLd(params: {
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+  datePublished?: string;
+  dateModified?: string;
+  authorName?: string;
+}) {
+  const baseUrl = SITE_URL.replace(/\/$/, "");
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: params.title,
+    description: params.description,
+    url: params.url,
+
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": params.url,
+    },
+
+    ...(params.image
+      ? {
+          image: [params.image],
+        }
+      : {}),
+
+    ...(params.datePublished
+      ? {
+          datePublished: params.datePublished,
+        }
+      : {}),
+
+    ...(params.dateModified
+      ? {
+          dateModified: params.dateModified,
+        }
+      : {}),
+
+    author: params.authorName
+      ? {
+          "@type": "Person",
+          name: params.authorName,
+        }
+      : {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: baseUrl,
+        },
+
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: baseUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/logo.png`,
+      },
+    },
+  };
+}

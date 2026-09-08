@@ -54,14 +54,38 @@ export interface Scholarship extends ScholarshipCard {
   seoDescription?: string;
 }
 
+export interface BlogPostCard {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  featuredImage?: Image & {
+    alt?: string;
+  };
+  publishedAt?: string;
+}
+
+export interface BlogSourceLink {
+  title: string;
+  url: string;
+}
+
 export interface BlogPost {
   _id: string;
   title: string;
   slug: string;
   excerpt?: string;
-  featuredImage?: Image;
+  featuredImage?: Image & {
+    alt?: string;
+  };
   body?: PortableTextBlock[];
   publishedAt?: string;
+  _updatedAt?: string;
+  authorName?: string;
+  lastReviewedAt?: string;
+  sourceLinks?: BlogSourceLink[];
+  relatedScholarships?: ScholarshipCard[];
+  relatedPosts?: BlogPostCard[];
   seoTitle?: string;
   seoDescription?: string;
 }

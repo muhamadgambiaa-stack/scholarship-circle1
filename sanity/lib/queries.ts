@@ -127,7 +127,20 @@ export const allPostsQuery = groq`
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0]{
     ...,
-    "slug": slug.current
+    "slug": slug.current,
+
+    "relatedScholarships": relatedScholarships[]->{
+      ${scholarshipCardFields}
+    },
+
+    "relatedPosts": relatedPosts[]->{
+      _id,
+      title,
+      "slug": slug.current,
+      excerpt,
+      featuredImage,
+      publishedAt
+    }
   }
 `;
 
