@@ -81,7 +81,11 @@ export const countryBySlugQuery = groq`
     name,
     "slug": slug.current,
     flagImage,
-    description
+    description,
+    guideContent,
+    lastReviewedAt,
+    seoTitle,
+    seoDescription
   }
 `;
 
@@ -101,6 +105,10 @@ export const categoryBySlugQuery = groq`
     name,
     "slug": slug.current,
     description,
+    guideContent,
+    lastReviewedAt,
+    seoTitle,
+    seoDescription,
     icon
   }
 `;

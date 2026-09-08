@@ -5,12 +5,20 @@ export interface CountryRef {
   slug: string;
   flagImage?: Image;
   description?: string;
+  guideContent?: PortableTextBlock[];
+  lastReviewedAt?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface CategoryRef {
   name: string;
   slug: string;
   description?: string;
+  guideContent?: PortableTextBlock[];
+  lastReviewedAt?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   icon?: string;
 }
 
