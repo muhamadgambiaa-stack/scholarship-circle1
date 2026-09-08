@@ -1,4 +1,4 @@
-import SearchBar from "./SearchBar";
+﻿import SearchBar from "./SearchBar";
 
 export default function Hero() {
   return (
@@ -11,23 +11,26 @@ export default function Hero() {
         }}
         aria-hidden
       />
-      <div className="container-page relative py-12 sm:py-16">
-        <p className="mb-3 inline-block rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-gold-300">
+
+      <div className="container-page relative py-10 sm:py-14">
+        <p className="mb-3 inline-flex rounded-full border border-gold-500/30 bg-gold-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold-300 sm:text-xs">
           Genuine Scholarships, Verified Weekly
         </p>
-        <h1 className="max-w-3xl font-serif text-3xl font-bold leading-tight text-white sm:text-4xl">
+
+        <h1 className="max-w-2xl font-serif text-[30px] font-bold leading-[1.15] text-white sm:text-4xl">
           Discover Fully-Funded Scholarships Worldwide
         </h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-navy-200 sm:text-lg">
-          The Scholarship Circle curates genuine bachelor&apos;s, master&apos;s, PhD, and
-          fellowship opportunities so you can focus on your application, not on spotting
-          scams.
+
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-navy-200 sm:text-base sm:leading-7">
+          The Scholarship Circle curates genuine bachelor&apos;s, master&apos;s,
+          PhD, and fellowship opportunities so you can focus on your
+          application, not on spotting scams.
         </p>
-        <div className="mt-6 max-w-2xl">
+
+        <div className="mt-6 max-w-xl">
           <SearchBar variant="hero" />
         </div>
       </div>
     </section>
   );
 }
-

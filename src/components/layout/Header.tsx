@@ -1,44 +1,39 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 import Navigation from "./Navigation";
 
 export default function Header() {
   return (
-    <header className="relative sticky top-0 z-40 border-b border-navy-100 bg-white/95 backdrop-blur">
-      <div className="container-page flex h-14 items-center justify-between gap-3 sm:h-16">
-        {/* Brand */}
+    <header className="sticky top-0 z-40 border-b border-navy-100/80 bg-white/95 backdrop-blur-md">
+      <div className="container-page flex h-14 items-center gap-3">
         <Link
           href="/"
           className="flex min-w-0 items-center gap-2"
           aria-label="The Scholarship Circle home"
         >
-          {/* Logo */}
-          <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full sm:h-9 sm:w-9">
+          <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full sm:h-8 sm:w-8">
             <Image
               src="/logo.png"
               alt="The Scholarship Circle logo"
               fill
               className="object-cover"
-              sizes="36px"
+              sizes="32px"
               priority
             />
           </span>
 
-          {/* Site Name */}
-          <span className="truncate whitespace-nowrap font-serif text-[13px] font-bold leading-none text-navy-900 sm:text-base lg:text-lg">
+          <span className="truncate whitespace-nowrap font-serif text-sm font-bold leading-none text-navy-900 sm:text-base">
             The Scholarship Circle
           </span>
         </Link>
 
-        {/* Navigation */}
         <div className="ml-auto flex shrink-0 items-center">
           <Navigation />
         </div>
 
-        {/* Desktop CTA */}
         <Link
           href="/scholarships"
-          className="btn-primary hidden shrink-0 lg:inline-flex"
+          className="hidden h-9 shrink-0 items-center justify-center rounded-md bg-navy-800 px-4 text-sm font-semibold text-white transition-colors hover:bg-navy-700 lg:inline-flex"
         >
           Find Scholarships
         </Link>
@@ -46,4 +41,3 @@ export default function Header() {
     </header>
   );
 }
-
