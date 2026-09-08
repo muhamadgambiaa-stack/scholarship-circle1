@@ -105,15 +105,41 @@ export default function ScholarshipDetail({
     0
   );
 
-  const metaItems = [
-    scholarship.country?.name,
-    scholarship.university,
-    scholarship.provider,
-  ].filter(
-    (value, index, values): value is string =>
-      Boolean(value) &&
-      values.indexOf(value) === index
-  );
+  const metaItems: Array<{
+    label: string;
+    href?: string;
+  }> = [];
+
+  if (scholarship.country?.name) {
+    metaItems.push({
+      label: scholarship.country.name,
+      href: scholarship.country.slug
+        ? `/countries/${scholarship.country.slug}`
+        : undefined,
+    });
+  }
+
+  if (
+    scholarship.university &&
+    !metaItems.some(
+      (item) => item.label === scholarship.university
+    )
+  ) {
+    metaItems.push({
+      label: scholarship.university,
+    });
+  }
+
+  if (
+    scholarship.provider &&
+    !metaItems.some(
+      (item) => item.label === scholarship.provider
+    )
+  ) {
+    metaItems.push({
+      label: scholarship.provider,
+    });
+  }
 
   return (
     <article className="container-page py-6 sm:py-8">
@@ -164,7 +190,26 @@ export default function ScholarshipDetail({
           {/* Metadata */}
           {metaItems.length > 0 && (
             <p className="mt-3 max-w-3xl text-sm leading-6 text-navy-500 sm:text-base">
-              {metaItems.join(" \u00B7 ")}
+              {metaItems.map((item, index) => (
+                <span key={`${item.label}-${index}`}>
+                  {index > 0 && (
+                    <span aria-hidden="true">
+                      {" \u00B7 "}
+                    </span>
+                  )}
+
+                  {item.href ? (
+                    <Link
+                      href={item.href}
+                      className="font-medium text-navy-600 underline decoration-navy-200 underline-offset-4 transition-colors hover:text-navy-900 hover:decoration-navy-400"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    item.label
+                  )}
+                </span>
+              ))}
             </p>
           )}
 
@@ -201,9 +246,16 @@ export default function ScholarshipDetail({
 
               <div className="flex flex-wrap gap-2">
                 {scholarship.categories.map((category) => (
-                  <Badge key={category.slug} tone="outline">
-                    {category.name}
-                  </Badge>
+                  <Link
+                    key={category.slug}
+                    href={`/categories/${category.slug}`}
+                    className="rounded-full transition-opacity hover:opacity-80"
+                    aria-label={`Browse ${category.name} opportunities`}
+                  >
+                    <Badge tone="outline">
+                      {category.name}
+                    </Badge>
+                  </Link>
                 ))}
               </div>
             </section>
