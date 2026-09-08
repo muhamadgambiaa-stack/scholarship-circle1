@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import {
   CalendarClock,
@@ -27,18 +27,32 @@ export default function ScholarshipDetail({
 }) {
   const img = urlForImage(scholarship.featuredImage)
     ?.width(1200)
-    .height(600)
+    .height(675)
     .url();
 
   const deadline = deadlineStatus(scholarship.deadline);
 
+  const eligibleCountries = scholarship.eligibleCountries ?? [];
+  const sidebarCountries = eligibleCountries.slice(0, 6);
+  const remainingCountries = Math.max(
+    eligibleCountries.length - sidebarCountries.length,
+    0
+  );
+
+  const sidebarEligibleCountries =
+    sidebarCountries.length > 0
+      ? `${sidebarCountries.join(", ")}${
+          remainingCountries > 0 ? ` · +${remainingCountries} more` : ""
+        }`
+      : undefined;
+
   return (
-    <article className="container-page grid grid-cols-1 gap-7 py-6 sm:py-8 lg:grid-cols-3 lg:gap-10 lg:py-10">
+    <article className="container-page grid grid-cols-1 gap-8 py-6 sm:py-8 lg:grid-cols-3 lg:gap-10">
       {/* Main Content */}
       <div className="min-w-0 lg:col-span-2">
         {/* Featured Image */}
         {img && (
-          <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden rounded-lg bg-navy-50 ">
+          <div className="relative mb-5 h-[220px] w-full overflow-hidden rounded-xl bg-navy-50 sm:h-[300px] lg:h-[360px]">
             <Image
               src={img}
               alt={scholarship.title}
@@ -50,9 +64,8 @@ export default function ScholarshipDetail({
           </div>
         )}
 
-        {/* Main Badges */}
-        <div className="mb-4 flex flex-wrap gap-2">
-          {/* Funding Type */}
+        {/* Essential Badges Only */}
+        <div className="mb-4 flex flex-wrap gap-1.5">
           {scholarship.fundingType && (
             <Badge tone="gold">
               {FUNDING_TYPE_LABELS[scholarship.fundingType] ??
@@ -60,7 +73,6 @@ export default function ScholarshipDetail({
             </Badge>
           )}
 
-          {/* Degree Levels */}
           {scholarship.degreeLevels?.map((level) => (
             <Badge key={level} tone="navy">
               {DEGREE_LEVEL_LABELS[level] ?? level}
@@ -68,27 +80,13 @@ export default function ScholarshipDetail({
           ))}
         </div>
 
-        {/* Categories
-            Hidden on very small screens to avoid overcrowding */}
-        {!!scholarship.categories?.length && (
-          <div className="mb-4 hidden flex-wrap gap-2 sm:flex">
-            {scholarship.categories.map((category) => (
-              <Badge key={category.slug} tone="outline">
-                {category.name}
-              </Badge>
-            ))}
-          </div>
-        )}
-
         {/* Title */}
-        <div className="mt-3">
-          <h1 className="break-words font-serif text-2xl font-bold leading-[1.2] text-navy-900 sm:text-3xl lg:text-3xl">
-            {scholarship.title}
-          </h1>
-        </div>
+        <h1 className="max-w-3xl break-words font-serif text-2xl font-bold leading-[1.2] text-navy-900 sm:text-3xl lg:text-[32px]">
+          {scholarship.title}
+        </h1>
 
         {/* Country / University / Provider */}
-        <p className="mt-3 text-sm leading-6 text-navy-500 sm:text-base">
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-navy-500 sm:text-base">
           {scholarship.country?.name}
 
           {scholarship.university
@@ -100,7 +98,7 @@ export default function ScholarshipDetail({
             : ""}
         </p>
 
-        {/* Share Button */}
+        {/* Share */}
         <div className="mt-4">
           <ShareButton
             title={scholarship.title}
@@ -109,16 +107,29 @@ export default function ScholarshipDetail({
               scholarship.seoDescription ||
               scholarship.title
             }
-            className="inline-flex items-center justify-center rounded-md border border-navy-300 bg-gold-500 px-4 py-2 text-sm font-semibold text-navy-900 shadow-sm transition hover:bg-gold-400"
+            className="inline-flex items-center justify-center rounded-md border border-navy-200 bg-white px-3 py-1.5 text-xs font-semibold text-navy-700 shadow-sm transition-colors hover:bg-navy-50 hover:text-navy-950 sm:text-sm"
             label="Share this scholarship"
           />
         </div>
 
-        {/* Scholarship Body */}
+        {/* Main Article */}
         {!!scholarship.body?.length && (
-          <div className="prose prose-navy mt-7 max-w-none prose-headings:font-serif prose-a:text-navy-700 sm:mt-8">
+          <div className="prose prose-navy mt-8 max-w-3xl prose-headings:font-serif prose-a:text-navy-700">
             <PortableText value={scholarship.body} />
           </div>
+        )}
+
+        {/* Eligible Countries - Full List */}
+        {eligibleCountries.length > 0 && (
+          <section className="mt-8 max-w-3xl">
+            <h2 className="mb-3 font-serif text-xl font-bold text-navy-900">
+              Eligible Countries
+            </h2>
+
+            <p className="text-sm leading-7 text-navy-700">
+              {eligibleCountries.join(", ")}
+            </p>
+          </section>
         )}
 
         {/* Benefits */}
@@ -150,25 +161,42 @@ export default function ScholarshipDetail({
 
         {/* Application Process */}
         {!!scholarship.applicationProcess?.length && (
-          <div className="mt-8">
+          <section className="mt-8 max-w-3xl">
             <h2 className="mb-3 font-serif text-xl font-bold text-navy-900">
               Application Process
             </h2>
 
-            <div className="prose prose-navy max-w-none">
+            <div className="prose prose-navy max-w-none prose-headings:font-serif prose-a:text-navy-700">
               <PortableText value={scholarship.applicationProcess} />
             </div>
-          </div>
+          </section>
+        )}
+
+        {/* Categories */}
+        {!!scholarship.categories?.length && (
+          <section className="mt-8 max-w-3xl border-t border-navy-100 pt-6">
+            <h2 className="mb-3 text-sm font-semibold text-navy-700">
+              Categories
+            </h2>
+
+            <div className="flex flex-wrap gap-2">
+              {scholarship.categories.map((category) => (
+                <Badge key={category.slug} tone="outline">
+                  {category.name}
+                </Badge>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Related Scholarships */}
         {!!scholarship.relatedScholarships?.length && (
-          <div className="mt-10 sm:mt-12">
-            <h2 className="mb-5 font-serif text-xl font-bold text-navy-900 sm:mb-6">
+          <section className="mt-10 sm:mt-12">
+            <h2 className="mb-5 font-serif text-xl font-bold text-navy-900">
               Related Scholarships
             </h2>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {scholarship.relatedScholarships.map(
                 (relatedScholarship) => (
                   <ScholarshipCard
@@ -178,37 +206,33 @@ export default function ScholarshipDetail({
                 )
               )}
             </div>
-          </div>
+          </section>
         )}
       </div>
 
       {/* Sidebar */}
       <aside className="lg:col-span-1">
-        <div className="rounded-lg border border-navy-100 bg-navy-50/60 p-5 sm:p-6 lg:sticky lg:top-24">
+        <div className="rounded-xl border border-navy-100 bg-white p-5 shadow-sm lg:sticky lg:top-20">
           <h2 className="mb-4 font-serif text-lg font-bold text-navy-900">
             Key Information
           </h2>
 
           <dl className="space-y-3 text-sm">
-            {/* Country */}
             <InfoRow
               label="Country"
               value={scholarship.country?.name}
             />
 
-            {/* University */}
             <InfoRow
               label="University"
               value={scholarship.university}
             />
 
-            {/* Provider */}
             <InfoRow
               label="Provider"
               value={scholarship.provider}
             />
 
-            {/* Degree Levels */}
             <InfoRow
               label="Degree Levels"
               value={
@@ -223,7 +247,6 @@ export default function ScholarshipDetail({
               }
             />
 
-            {/* Funding Type */}
             <InfoRow
               label="Funding Type"
               value={
@@ -235,17 +258,11 @@ export default function ScholarshipDetail({
               }
             />
 
-            {/* Eligible Countries */}
             <InfoRow
               label="Eligible Countries"
-              value={
-                scholarship.eligibleCountries?.length
-                  ? scholarship.eligibleCountries.join(", ")
-                  : undefined
-              }
+              value={sidebarEligibleCountries}
             />
 
-            {/* Deadline */}
             <InfoRow
               label="Deadline"
               value={
@@ -256,24 +273,22 @@ export default function ScholarshipDetail({
             />
           </dl>
 
-          {/* Deadline Status */}
           <div
             className={`mt-4 flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${
               deadline.closed
                 ? "bg-red-50 text-red-600"
-                : "bg-white text-navy-700"
+                : "bg-navy-50 text-navy-700"
             }`}
           >
             <CalendarClock size={16} />
             {deadline.label}
           </div>
 
-          {/* Apply Button */}
           <a
             href={scholarship.applicationLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary mt-6 flex w-full items-center justify-center"
+            className="btn-primary mt-5 flex w-full items-center justify-center"
           >
             Apply Now
             <ExternalLink size={16} className="ml-2" />
@@ -284,9 +299,6 @@ export default function ScholarshipDetail({
   );
 }
 
-/**
- * Information row used in the sidebar.
- */
 function InfoRow({
   label,
   value,
@@ -297,23 +309,18 @@ function InfoRow({
   if (!value) return null;
 
   return (
-    <div className="flex flex-col gap-1 border-b border-navy-100 pb-2 sm:flex-row sm:justify-between sm:gap-4">
-      <dt className="text-navy-500">
+    <div className="border-b border-navy-100 pb-3 last:border-b-0">
+      <dt className="text-xs font-medium text-navy-500">
         {label}
       </dt>
 
-      <dd className="break-words font-medium text-navy-900 sm:max-w-[60%] sm:text-right">
+      <dd className="mt-1 break-words font-medium leading-5 text-navy-900">
         {value}
       </dd>
     </div>
   );
 }
 
-/**
- * Reusable list for Benefits,
- * Eligibility Requirements,
- * and Required Documents.
- */
 function DetailList({
   icon,
   title,
@@ -324,7 +331,7 @@ function DetailList({
   items: string[];
 }) {
   return (
-    <div className="mt-7 sm:mt-8">
+    <section className="mt-8 max-w-3xl">
       <h2 className="mb-3 flex items-center gap-2 font-serif text-xl font-bold text-navy-900">
         {icon}
         {title}
@@ -341,6 +348,6 @@ function DetailList({
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
