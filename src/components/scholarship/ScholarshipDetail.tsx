@@ -33,12 +33,12 @@ export default function ScholarshipDetail({
   const deadline = deadlineStatus(scholarship.deadline);
 
   return (
-    <article className="container-page grid grid-cols-1 gap-10 py-10 lg:grid-cols-3">
+    <article className="container-page grid grid-cols-1 gap-7 py-6 sm:py-8 lg:grid-cols-3 lg:gap-10 lg:py-10">
       {/* Main Content */}
-      <div className="lg:col-span-2">
+      <div className="min-w-0 lg:col-span-2">
         {/* Featured Image */}
         {img && (
-          <div className="relative mb-6 h-72 w-full overflow-hidden rounded-lg bg-navy-50 sm:h-96">
+          <div className="relative mb-5 h-52 w-full overflow-hidden rounded-lg bg-navy-50 sm:h-80 lg:h-96">
             <Image
               src={img}
               alt={scholarship.title}
@@ -50,7 +50,7 @@ export default function ScholarshipDetail({
           </div>
         )}
 
-        {/* Scholarship Badges */}
+        {/* Main Badges */}
         <div className="mb-4 flex flex-wrap gap-2">
           {/* Funding Type */}
           {scholarship.fundingType && (
@@ -66,24 +66,42 @@ export default function ScholarshipDetail({
               {DEGREE_LEVEL_LABELS[level] ?? level}
             </Badge>
           ))}
-
-          {/* Categories */}
-          {scholarship.categories?.map((category) => (
-            <Badge key={category.slug} tone="outline">
-              {category.name}
-            </Badge>
-          ))}
         </div>
 
+        {/* Categories
+            Hidden on very small screens to avoid overcrowding */}
+        {!!scholarship.categories?.length && (
+          <div className="mb-4 hidden flex-wrap gap-2 sm:flex">
+            {scholarship.categories.map((category) => (
+              <Badge key={category.slug} tone="outline">
+                {category.name}
+              </Badge>
+            ))}
+          </div>
+        )}
+
         {/* Title */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-          <h1 className="font-serif text-3xl font-bold text-navy-900 sm:text-4xl">
+        <div className="mt-3">
+          <h1 className="break-words font-serif text-2xl font-bold leading-tight text-navy-900 sm:text-3xl lg:text-4xl">
             {scholarship.title}
           </h1>
         </div>
 
+        {/* Country / University / Provider */}
+        <p className="mt-3 text-sm leading-6 text-navy-500 sm:text-base">
+          {scholarship.country?.name}
+
+          {scholarship.university
+            ? ` · ${scholarship.university}`
+            : ""}
+
+          {scholarship.provider
+            ? ` · ${scholarship.provider}`
+            : ""}
+        </p>
+
         {/* Share Button */}
-        <div className="mt-3 flex flex-wrap items-center gap-3">
+        <div className="mt-4">
           <ShareButton
             title={scholarship.title}
             description={
@@ -96,18 +114,9 @@ export default function ScholarshipDetail({
           />
         </div>
 
-        {/* Country / University / Provider */}
-        <p className="mt-2 text-navy-500">
-          {scholarship.country?.name}
-          {scholarship.university
-            ? ` · ${scholarship.university}`
-            : ""}
-          {scholarship.provider ? ` · ${scholarship.provider}` : ""}
-        </p>
-
         {/* Scholarship Body */}
-        {scholarship.body && (
-          <div className="prose prose-navy mt-8 max-w-none prose-headings:font-serif prose-a:text-navy-700">
+        {!!scholarship.body?.length && (
+          <div className="prose prose-navy mt-7 max-w-none prose-headings:font-serif prose-a:text-navy-700 sm:mt-8">
             <PortableText value={scholarship.body} />
           </div>
         )}
@@ -154,12 +163,12 @@ export default function ScholarshipDetail({
 
         {/* Related Scholarships */}
         {!!scholarship.relatedScholarships?.length && (
-          <div className="mt-12">
-            <h2 className="mb-6 font-serif text-xl font-bold text-navy-900">
+          <div className="mt-10 sm:mt-12">
+            <h2 className="mb-5 font-serif text-xl font-bold text-navy-900 sm:mb-6">
               Related Scholarships
             </h2>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
               {scholarship.relatedScholarships.map(
                 (relatedScholarship) => (
                   <ScholarshipCard
@@ -175,7 +184,7 @@ export default function ScholarshipDetail({
 
       {/* Sidebar */}
       <aside className="lg:col-span-1">
-        <div className="sticky top-24 rounded-lg border border-navy-100 bg-navy-50/60 p-6">
+        <div className="rounded-lg border border-navy-100 bg-navy-50/60 p-5 sm:p-6 lg:sticky lg:top-24">
           <h2 className="mb-4 font-serif text-lg font-bold text-navy-900">
             Key Information
           </h2>
@@ -199,7 +208,7 @@ export default function ScholarshipDetail({
               value={scholarship.provider}
             />
 
-            {/* Multiple Degree Levels */}
+            {/* Degree Levels */}
             <InfoRow
               label="Degree Levels"
               value={
@@ -219,8 +228,9 @@ export default function ScholarshipDetail({
               label="Funding Type"
               value={
                 scholarship.fundingType
-                  ? FUNDING_TYPE_LABELS[scholarship.fundingType] ??
-                    scholarship.fundingType
+                  ? FUNDING_TYPE_LABELS[
+                      scholarship.fundingType
+                    ] ?? scholarship.fundingType
                   : undefined
               }
             />
@@ -228,7 +238,11 @@ export default function ScholarshipDetail({
             {/* Eligible Countries */}
             <InfoRow
               label="Eligible Countries"
-              value={scholarship.eligibleCountries?.join(", ")}
+              value={
+                scholarship.eligibleCountries?.length
+                  ? scholarship.eligibleCountries.join(", ")
+                  : undefined
+              }
             />
 
             {/* Deadline */}
@@ -283,10 +297,12 @@ function InfoRow({
   if (!value) return null;
 
   return (
-    <div className="flex justify-between gap-4 border-b border-navy-100 pb-2">
-      <dt className="text-navy-500">{label}</dt>
+    <div className="flex flex-col gap-1 border-b border-navy-100 pb-2 sm:flex-row sm:justify-between sm:gap-4">
+      <dt className="text-navy-500">
+        {label}
+      </dt>
 
-      <dd className="text-right font-medium text-navy-900">
+      <dd className="break-words font-medium text-navy-900 sm:max-w-[60%] sm:text-right">
         {value}
       </dd>
     </div>
@@ -294,8 +310,9 @@ function InfoRow({
 }
 
 /**
- * Reusable list component for Benefits,
- * Eligibility Requirements, and Required Documents.
+ * Reusable list for Benefits,
+ * Eligibility Requirements,
+ * and Required Documents.
  */
 function DetailList({
   icon,
@@ -307,7 +324,7 @@ function DetailList({
   items: string[];
 }) {
   return (
-    <div className="mt-8">
+    <div className="mt-7 sm:mt-8">
       <h2 className="mb-3 flex items-center gap-2 font-serif text-xl font-bold text-navy-900">
         {icon}
         {title}
@@ -316,11 +333,11 @@ function DetailList({
       <ul className="space-y-2">
         {items.map((item, index) => (
           <li
-            key={index}
-            className="flex items-start gap-2 text-sm text-navy-700"
+            key={`${item}-${index}`}
+            className="flex items-start gap-2 text-sm leading-6 text-navy-700"
           >
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
-            {item}
+            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
+            <span>{item}</span>
           </li>
         ))}
       </ul>
