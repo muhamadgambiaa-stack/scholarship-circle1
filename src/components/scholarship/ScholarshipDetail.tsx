@@ -151,7 +151,10 @@ export default function ScholarshipDetail({
             <div className="relative mb-5 h-[220px] w-full overflow-hidden rounded-xl bg-navy-50 sm:h-[300px] lg:h-[360px]">
               <Image
                 src={img}
-                alt={scholarship.title}
+                alt={
+                  scholarship.featuredImage?.alt ||
+                  scholarship.title
+                }
                 fill
                 priority
                 className="object-cover"

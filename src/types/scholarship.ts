@@ -27,7 +27,9 @@ export interface ScholarshipCard {
   title: string;
   slug: string;
   excerpt?: string;
-  featuredImage?: Image;
+  featuredImage?: Image & {
+    alt?: string;
+  };
   degreeLevels?: string[];
   fundingType?: string;
   deadline?: string;
