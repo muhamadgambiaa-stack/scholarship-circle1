@@ -164,7 +164,7 @@ export default function ScholarshipDetail({
           {/* Metadata */}
           {metaItems.length > 0 && (
             <p className="mt-3 max-w-3xl text-sm leading-6 text-navy-500 sm:text-base">
-              {metaItems.join(" · ")}
+              {metaItems.join(" Â· ")}
             </p>
           )}
 
@@ -263,15 +263,7 @@ export default function ScholarshipDetail({
             </section>
           )}
 
-          {/* MOBILE MORE OPPORTUNITIES */}
-          <div className="mt-10 lg:hidden">
-            <MoreOpportunities
-              items={scholarship.moreOpportunities}
-            />
-          </div>
-
-          {/* APPLY BUTTON
-              This is intentionally at the end. */}
+          {/* APPLY BUTTON */}
           <div className="mt-10 max-w-3xl border-t border-navy-100 pt-8">
             <a
               href={scholarship.applicationLink}
@@ -286,6 +278,13 @@ export default function ScholarshipDetail({
             <p className="mt-3 text-xs leading-5 text-navy-500">
               Applications are completed on the official provider website.
             </p>
+          </div>
+
+          {/* MOBILE MORE OPPORTUNITIES */}
+          <div className="mt-10 lg:hidden">
+            <MoreOpportunities
+              items={scholarship.moreOpportunities}
+            />
           </div>
         </div>
 
