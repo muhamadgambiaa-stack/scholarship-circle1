@@ -13,6 +13,7 @@ const scholarshipCardFields = groq`
   university,
   provider,
   publishedAt,
+  "primaryCategory": categories[0]->name,
   "country": country->{name, "slug": slug.current}
 `;
 
@@ -34,7 +35,17 @@ export const scholarshipBySlugQuery = groq`
     "slug": slug.current,
     "country": country->{name, "slug": slug.current},
     "categories": categories[]->{name, "slug": slug.current},
-    "relatedScholarships": relatedScholarships[]->{ ${scholarshipCardFields} }
+
+    "relatedScholarships": relatedScholarships[]->{
+      ${scholarshipCardFields}
+    },
+
+    "moreOpportunities": *[
+      _type == "scholarship" &&
+      slug.current != $slug
+    ] | order(publishedAt desc) [0...6] {
+      ${scholarshipCardFields}
+    }
   }
 `;
 
@@ -43,11 +54,15 @@ export const allScholarshipSlugsQuery = groq`
 `;
 
 export const scholarshipsByCountryQuery = groq`
-  *[_type == "scholarship" && country->slug.current == $slug] | order(publishedAt desc) { ${scholarshipCardFields} }
+  *[_type == "scholarship" && country->slug.current == $slug] | order(publishedAt desc) {
+    ${scholarshipCardFields}
+  }
 `;
 
 export const scholarshipsByCategoryQuery = groq`
-  *[_type == "scholarship" && $slug in categories[]->slug.current] | order(publishedAt desc) { ${scholarshipCardFields} }
+  *[_type == "scholarship" && $slug in categories[]->slug.current] | order(publishedAt desc) {
+    ${scholarshipCardFields}
+  }
 `;
 
 export const allCountriesQuery = groq`
@@ -108,8 +123,6 @@ export const postBySlugQuery = groq`
   }
 `;
 
-// Search scholarships across title, university, provider, country,
-// degree levels, and funding type.
 export const searchScholarshipsQuery = groq`
   *[_type == "scholarship" && (
     title match $term + "*" ||
@@ -118,5 +131,7 @@ export const searchScholarshipsQuery = groq`
     country->name match $term + "*" ||
     degreeLevels[] match $term + "*" ||
     fundingType match $term + "*"
-  )] | order(publishedAt desc) [0...20] { ${scholarshipCardFields} }
+  )] | order(publishedAt desc) [0...20] {
+    ${scholarshipCardFields}
+  }
 `;

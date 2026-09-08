@@ -20,15 +20,13 @@ export interface ScholarshipCard {
   slug: string;
   excerpt?: string;
   featuredImage?: Image;
-
-  // Multiple degree levels can now be selected in Sanity
   degreeLevels?: string[];
-
   fundingType?: string;
   deadline?: string;
   university?: string;
   provider?: string;
   publishedAt?: string;
+  primaryCategory?: string;
   country?: CountryRef;
 }
 
@@ -43,6 +41,7 @@ export interface Scholarship extends ScholarshipCard {
   applicationLink: string;
   featured?: boolean;
   relatedScholarships?: ScholarshipCard[];
+  moreOpportunities?: ScholarshipCard[];
   seoTitle?: string;
   seoDescription?: string;
 }
