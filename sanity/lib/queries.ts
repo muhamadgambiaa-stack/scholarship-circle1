@@ -135,3 +135,17 @@ export const searchScholarshipsQuery = groq`
     ${scholarshipCardFields}
   }
 `;
+
+export const scholarshipCountByCountryQuery = groq`
+  count(*[
+    _type == "scholarship" &&
+    country->slug.current == $slug
+  ])
+`;
+
+export const scholarshipCountByCategoryQuery = groq`
+  count(*[
+    _type == "scholarship" &&
+    $slug in categories[]->slug.current
+  ])
+`;
