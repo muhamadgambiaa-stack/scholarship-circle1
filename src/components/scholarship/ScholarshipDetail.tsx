@@ -164,7 +164,7 @@ export default function ScholarshipDetail({
           {/* Metadata */}
           {metaItems.length > 0 && (
             <p className="mt-3 max-w-3xl text-sm leading-6 text-navy-500 sm:text-base">
-              {metaItems.join(" Â· ")}
+              {metaItems.join(" Ã‚Â· ")}
             </p>
           )}
 
@@ -190,6 +190,23 @@ export default function ScholarshipDetail({
                 components={portableTextComponents}
               />
             </div>
+          )}
+
+          {/* Categories */}
+          {!!scholarship.categories?.length && (
+            <section className="mt-8 max-w-3xl border-t border-navy-100 pt-6">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-navy-500">
+                Categories
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {scholarship.categories.map((category) => (
+                  <Badge key={category.slug} tone="outline">
+                    {category.name}
+                  </Badge>
+                ))}
+              </div>
+            </section>
           )}
 
           {/* Eligible Countries */}
@@ -246,22 +263,7 @@ export default function ScholarshipDetail({
             </section>
           )}
 
-          {/* Categories */}
-          {!!scholarship.categories?.length && (
-            <section className="mt-8 max-w-3xl border-t border-navy-100 pt-6">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-navy-500">
-                Categories
-              </p>
 
-              <div className="flex flex-wrap gap-2">
-                {scholarship.categories.map((category) => (
-                  <Badge key={category.slug} tone="outline">
-                    {category.name}
-                  </Badge>
-                ))}
-              </div>
-            </section>
-          )}
 
           {/* APPLY BUTTON */}
           <div className="mt-10 max-w-3xl border-t border-navy-100 pt-8">
