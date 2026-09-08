@@ -2,7 +2,7 @@ import { MessageCircle } from "lucide-react";
 
 export default function WhatsAppChannel() {
   return (
-    <section className="bg-navy-950 py-14">
+    <section className="bg-navy-950 py-10 sm:py-12">
       <div className="container-page flex flex-col items-center gap-6 text-center">
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/15 text-green-400">
           <MessageCircle size={28} />
@@ -31,3 +31,4 @@ export default function WhatsAppChannel() {
     </section>
   );
 }
+

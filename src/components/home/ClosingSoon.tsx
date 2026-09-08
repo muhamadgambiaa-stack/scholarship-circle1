@@ -4,8 +4,8 @@ import type { ScholarshipCard as ScholarshipCardType } from "@/types/scholarship
 export default function ClosingSoon({ items }: { items: ScholarshipCardType[] }) {
   if (!items.length) return null;
   return (
-    <section className="container-page py-14">
-      <div className="mb-8">
+    <section className="container-page py-10 sm:py-12">
+      <div className="mb-6">
         <h2 className="section-heading">Scholarships Closing Soon</h2>
         <p className="mt-1 text-sm text-navy-500">Don&apos;t miss these upcoming deadlines.</p>
       </div>
@@ -17,3 +17,4 @@ export default function ClosingSoon({ items }: { items: ScholarshipCardType[] })
     </section>
   );
 }
+

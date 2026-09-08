@@ -31,7 +31,7 @@ export default function ScholarshipCard({
         className="flex flex-1 flex-col"
       >
         {/* Image */}
-        <div className="relative h-44 w-full overflow-hidden bg-navy-50">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-navy-50">
           {img ? (
             <Image
               src={img}
@@ -59,7 +59,7 @@ export default function ScholarshipCard({
 
         {/* Scholarship Information */}
         <div className="flex flex-1 flex-col p-4">
-          <h3 className="line-clamp-2 font-serif text-lg font-semibold text-navy-900 group-hover:text-navy-700">
+          <h3 className="line-clamp-2 font-serif text-base font-semibold leading-snug sm:text-lg text-navy-900 group-hover:text-navy-700">
             {scholarship.title}
           </h3>
 
@@ -73,7 +73,7 @@ export default function ScholarshipCard({
           {/* Degree Levels */}
           {scholarship.degreeLevels &&
             scholarship.degreeLevels.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-1.5">
                 {scholarship.degreeLevels.map((level) => (
                   <Badge key={level} tone="navy">
                     {DEGREE_LEVEL_LABELS[level] ?? level}
@@ -106,3 +106,4 @@ export default function ScholarshipCard({
     </div>
   );
 }
+

@@ -6,8 +6,8 @@ import type { CountryRef } from "@/types/scholarship";
 export default function PopularDestinations({ items }: { items: CountryRef[] }) {
   if (!items.length) return null;
   return (
-    <section className="container-page py-14">
-      <h2 className="section-heading mb-8">Popular Scholarship Destinations</h2>
+    <section className="container-page py-10 sm:py-12">
+      <h2 className="section-heading mb-6">Popular Scholarship Destinations</h2>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {items.map((country) => {
           const img = urlForImage(country.flagImage)?.width(200).height(200).url();
@@ -32,3 +32,4 @@ export default function PopularDestinations({ items }: { items: CountryRef[] }) 
     </section>
   );
 }
+

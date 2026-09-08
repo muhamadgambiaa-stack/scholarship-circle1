@@ -52,7 +52,7 @@ export default function Newsletter() {
   }
 
   return (
-    <section className="bg-navy-50/60 py-14">
+    <section className="bg-navy-50/60 py-10 sm:py-12">
       <div className="container-page flex flex-col items-center gap-4 text-center">
         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-navy-800 text-gold-400">
           <Mail size={22} />
@@ -89,3 +89,4 @@ export default function Newsletter() {
     </section>
   );
 }
+

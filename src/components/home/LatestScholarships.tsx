@@ -5,9 +5,9 @@ import type { ScholarshipCard as ScholarshipCardType } from "@/types/scholarship
 export default function LatestScholarships({ items }: { items: ScholarshipCardType[] }) {
   if (!items.length) return null;
   return (
-    <section className="bg-navy-50/60 py-14">
+    <section className="bg-navy-50/60 py-10 sm:py-12">
       <div className="container-page">
-        <div className="mb-8 flex items-end justify-between">
+        <div className="mb-6 flex items-end justify-between">
           <h2 className="section-heading">Latest Scholarships</h2>
           <Link href="/scholarships" className="text-sm font-semibold text-navy-700 hover:text-navy-900">
             View all →
@@ -22,3 +22,4 @@ export default function LatestScholarships({ items }: { items: ScholarshipCardTy
     </section>
   );
 }
+

@@ -12,7 +12,7 @@ export default function Breadcrumbs({ items }: { items: { name: string; href?: s
                 {item.name}
               </Link>
             ) : (
-              <span className="text-navy-800">{item.name}</span>
+              <span className="max-w-[180px] truncate text-navy-800 sm:max-w-sm">{item.name}</span>
             )}
             {i < items.length - 1 && <ChevronRight size={14} />}
           </li>
@@ -21,3 +21,4 @@ export default function Breadcrumbs({ items }: { items: { name: string; href?: s
     </nav>
   );
 }
+

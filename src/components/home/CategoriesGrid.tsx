@@ -5,9 +5,9 @@ import type { CategoryRef } from "@/types/scholarship";
 export default function CategoriesGrid({ items }: { items: CategoryRef[] }) {
   if (!items.length) return null;
   return (
-    <section className="bg-navy-50/60 py-14">
+    <section className="bg-navy-50/60 py-10 sm:py-12">
       <div className="container-page">
-        <h2 className="section-heading mb-8">Browse by Category</h2>
+        <h2 className="section-heading mb-6">Browse by Category</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {items.map((cat) => {
             const iconKey = cat.icon
@@ -35,3 +35,4 @@ export default function CategoriesGrid({ items }: { items: CategoryRef[] }) {
     </section>
   );
 }
+

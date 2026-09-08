@@ -38,7 +38,7 @@ export default function ScholarshipDetail({
       <div className="min-w-0 lg:col-span-2">
         {/* Featured Image */}
         {img && (
-          <div className="relative mb-5 h-52 w-full overflow-hidden rounded-lg bg-navy-50 sm:h-80 lg:h-96">
+          <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden rounded-lg bg-navy-50 ">
             <Image
               src={img}
               alt={scholarship.title}
@@ -82,7 +82,7 @@ export default function ScholarshipDetail({
 
         {/* Title */}
         <div className="mt-3">
-          <h1 className="break-words font-serif text-2xl font-bold leading-tight text-navy-900 sm:text-3xl lg:text-4xl">
+          <h1 className="break-words font-serif text-2xl font-bold leading-[1.2] text-navy-900 sm:text-3xl lg:text-3xl">
             {scholarship.title}
           </h1>
         </div>

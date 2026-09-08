@@ -47,7 +47,7 @@ export default function Navigation() {
       </button>
 
       {open && (
-        <div className="absolute inset-x-0 top-16 z-30 border-b border-navy-100 bg-white p-4 shadow-lg lg:hidden">
+        <div className="absolute inset-x-0 top-full z-30 border-b border-navy-100 bg-white p-4 shadow-lg lg:hidden">
           <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
             {links.map((link) => (
               <Link
@@ -68,3 +68,4 @@ export default function Navigation() {
     </>
   );
 }
+
