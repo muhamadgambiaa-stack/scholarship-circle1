@@ -164,7 +164,7 @@ export default function ScholarshipDetail({
           {/* Metadata */}
           {metaItems.length > 0 && (
             <p className="mt-3 max-w-3xl text-sm leading-6 text-navy-500 sm:text-base">
-              {metaItems.join(" Ã‚Â· ")}
+              {metaItems.join(" \u00B7 ")}
             </p>
           )}
 
