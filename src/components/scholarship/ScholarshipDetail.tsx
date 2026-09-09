@@ -6,6 +6,7 @@ import {
   type PortableTextComponents,
 } from "@portabletext/react";
 import {
+  CalendarDays,
   CheckCircle2,
   ExternalLink,
   FileText,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { urlForImage } from "@/sanity/lib/image";
+import { formatDate } from "@/lib/utils";
 import {
   DEGREE_LEVEL_LABELS,
   FUNDING_TYPE_LABELS,
@@ -216,6 +218,25 @@ export default function ScholarshipDetail({
             </p>
           )}
 
+          {/* Application Deadline */}
+          {scholarship.deadline && (
+            <div className="mt-4 flex max-w-3xl items-center gap-3 rounded-lg border border-navy-100 bg-navy-50 px-4 py-3 text-sm text-navy-700">
+              <CalendarDays
+                size={18}
+                className="shrink-0 text-gold-500"
+              />
+
+              <div className="flex flex-wrap items-center gap-x-1.5">
+                <span className="font-semibold text-navy-900">
+                  Application deadline:
+                </span>
+
+                <time dateTime={scholarship.deadline}>
+                  {formatDate(scholarship.deadline)}
+                </time>
+              </div>
+            </div>
+          )}
           {/* Share */}
           <div className="mt-4">
             <ShareButton
