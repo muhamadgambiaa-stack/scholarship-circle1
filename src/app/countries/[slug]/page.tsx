@@ -138,40 +138,47 @@ export default async function CountryPage({
         )}
       </div>
 
-      <EditorialGuide
-        content={country.guideContent}
-        lastReviewedAt={country.lastReviewedAt}
-      />
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-12">
+        {/* COUNTRY GUIDE */}
+        <div className="min-w-0">
+          <EditorialGuide
+            content={country.guideContent}
+            lastReviewedAt={country.lastReviewedAt}
+          />
+        </div>
 
-      {scholarships.length > 0 ? (
-        <>
-          <div className="mt-10 flex flex-wrap items-end justify-between gap-3 border-t border-navy-100 pt-7">
-            <h2 className="font-serif text-2xl font-bold text-navy-900">
-              Scholarship Opportunities
-            </h2>
+        {/* SCHOLARSHIP OPPORTUNITIES */}
+        <aside className="mt-8 lg:mt-0">
+          <div className="border-t border-navy-100 pt-7 lg:sticky lg:top-24">
+            <div className="flex items-end justify-between gap-3">
+              <h2 className="font-serif text-xl font-bold leading-tight text-navy-900">
+                Scholarship Opportunities
+              </h2>
 
-            <p className="text-sm text-navy-500">
-              {scholarships.length}{" "}
-              {scholarships.length === 1
-                ? "listing"
-                : "listings"}
-            </p>
+              {scholarships.length > 0 && (
+                <span className="shrink-0 text-xs text-navy-400">
+                  {scholarships.length}
+                </span>
+              )}
+            </div>
+
+            {scholarships.length > 0 ? (
+              <div className="mt-5 space-y-5">
+                {scholarships.map((scholarship) => (
+                  <ScholarshipCard
+                    key={scholarship._id}
+                    scholarship={scholarship}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="mt-4 text-sm leading-6 text-navy-500">
+                No scholarships for {country.name} yet.
+              </p>
+            )}
           </div>
-
-          <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {scholarships.map((scholarship) => (
-              <ScholarshipCard
-                key={scholarship._id}
-                scholarship={scholarship}
-              />
-            ))}
-          </div>
-        </>
-      ) : (
-        <p className="mt-10 text-navy-500">
-          No scholarships for {country.name} yet.
-        </p>
-      )}
+        </aside>
+      </div>
     </div>
   );
 }
