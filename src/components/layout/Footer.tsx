@@ -15,6 +15,7 @@ const columns = [
     title: "Company",
     links: [
       { href: "/about", label: "About Us" },
+      { href: "/editorial-policy", label: "Editorial Policy" },
       { href: "/founder", label: "Founder" },
       { href: "/contact", label: "Contact" },
     ],

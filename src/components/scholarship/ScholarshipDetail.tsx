@@ -24,6 +24,7 @@ import {
 
 import Badge from "@/components/ui/Badge";
 import ShareButton from "@/components/ui/ShareButton";
+import VerificationBox from "@/components/scholarship/VerificationBox";
 
 
 const portableTextComponents: PortableTextComponents = {
@@ -340,6 +341,8 @@ export default function ScholarshipDetail({
           )}
 
 
+
+          <VerificationBox scholarship={scholarship} />
 
           {/* APPLY BUTTON */}
           <div className="mt-10 max-w-3xl border-t border-navy-100 pt-8">

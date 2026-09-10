@@ -49,6 +49,9 @@ export interface Scholarship extends ScholarshipCard {
   requiredDocuments?: string[];
   applicationProcess?: PortableTextBlock[];
   applicationLink: string;
+  officialSourceName?: string;
+  officialSourceUrl?: string;
+  lastVerifiedAt?: string;
   featured?: boolean;
   relatedScholarships?: ScholarshipCard[];
   moreOpportunities?: ScholarshipCard[];

@@ -118,6 +118,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/countries` },
     { url: `${baseUrl}/blog` },
     { url: `${baseUrl}/about` },
+    { url: `${baseUrl}/editorial-policy` },
     { url: `${baseUrl}/founder` },
     { url: `${baseUrl}/contact` },
   ];
@@ -228,6 +229,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         latestPostUpdate
       ),
       { url: `${baseUrl}/about` },
+    { url: `${baseUrl}/editorial-policy` },
       { url: `${baseUrl}/founder` },
       { url: `${baseUrl}/contact` },
     ];
