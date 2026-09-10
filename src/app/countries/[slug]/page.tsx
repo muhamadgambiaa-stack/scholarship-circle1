@@ -78,7 +78,10 @@ export async function generateMetadata({
   return {
     ...metadata,
     robots: {
-      index: Boolean(country) && scholarshipCount > 0,
+      index:
+        Boolean(country) &&
+        (scholarshipCount > 0 ||
+          Boolean(country?.guideContent?.length)),
       follow: true,
     },
   };
