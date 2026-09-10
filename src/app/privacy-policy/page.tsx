@@ -15,6 +15,9 @@ export default function PrivacyPolicyPage() {
       title="Privacy Policy"
       description="The Scholarship Circle provides scholarship information only and respects your privacy. This policy explains what information we collect and how we use it."
     >
+      <p><strong>Effective date:</strong> September 11, 2026</p>
+
+
       <h2>Introduction</h2>
       <p>
         At The Scholarship Circle, we are committed to protecting the privacy of visitors who use our
