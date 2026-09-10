@@ -15,6 +15,7 @@ import { urlForImage } from "@/sanity/lib/image";
 import {
   FUNDING_TYPE_LABELS,
   type CategoryRef,
+  type CountryRef,
   type ScholarshipCard as ScholarshipCardType,
 } from "@/types/scholarship";
 
@@ -97,6 +98,18 @@ export default async function CategoryPage({
 
   if (!category) notFound();
 
+  const relatedCountries = Array.from(
+    new Map(
+      scholarships
+        .map((scholarship) => scholarship.country)
+        .filter(
+          (country): country is CountryRef =>
+            Boolean(country?.name && country?.slug)
+        )
+        .map((country) => [country.slug, country] as const)
+    ).values()
+  ).slice(0, 8);
+
   const baseUrl = SITE_URL.replace(/\/$/, "");
 
   const breadcrumbData = breadcrumbJsonLd([
@@ -149,6 +162,37 @@ export default async function CategoryPage({
             content={category.guideContent}
             lastReviewedAt={category.lastReviewedAt}
           />
+
+          {relatedCountries.length > 0 && (
+            <section className="mt-10 border-t border-navy-100 pt-6">
+              <h2 className="font-serif text-xl font-bold text-navy-900 sm:text-2xl">
+                Explore related opportunities
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-navy-500">
+                Browse this scholarship category by destination.
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {relatedCountries.map((country) => (
+                  <Link
+                    key={country.slug}
+                    href={`/countries/${country.slug}`}
+                    className="rounded-full border border-navy-200 bg-white px-3 py-1.5 text-sm font-medium text-navy-700 transition-colors hover:border-navy-300 hover:bg-navy-50 hover:text-navy-950"
+                  >
+                    {country.name}
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                href="/countries"
+                className="mt-4 inline-flex text-sm font-semibold text-navy-700 underline decoration-gold-400 underline-offset-4 transition-colors hover:text-navy-950"
+              >
+                Browse all scholarship destinations
+              </Link>
+            </section>
+          )}
         </div>
 
         <aside>
