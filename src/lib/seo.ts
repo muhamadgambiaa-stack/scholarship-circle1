@@ -21,10 +21,10 @@ export function buildMetadata({
   type = "website",
 }: BuildMetadataArgs): Metadata {
   const url = `${SITE_URL}${path}`;
-  const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+  const socialTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 
   return {
-    title: fullTitle,
+    title,
     description,
     alternates: { canonical: url },
     openGraph: {
