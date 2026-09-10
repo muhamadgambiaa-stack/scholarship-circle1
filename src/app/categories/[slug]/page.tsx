@@ -63,7 +63,7 @@ export async function generateMetadata({
     title:
       category?.seoTitle ||
       (category
-        ? `${category.name} Scholarships`
+        ? `${category.name}`
         : "Category"),
     description:
       category?.seoDescription ||

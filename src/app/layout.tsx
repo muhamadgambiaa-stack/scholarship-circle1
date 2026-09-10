@@ -5,7 +5,7 @@ import "./globals.css";
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { buildMetadata, SITE_URL } from "@/lib/seo";
+import { SITE_URL } from "@/lib/seo";
 
 const SITE_NAME = "The Scholarship Circle";
 

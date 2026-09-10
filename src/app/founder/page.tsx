@@ -36,12 +36,12 @@ export default function FounderPage() {
               <Mail size={16} /> muhammedjbah84@gmail.com
             </a>
             <a
-              href="https://wa.me/6285642062883"
+              href="https://www.whatsapp.com/channel/0029VbAizC41NCrYce9fJ03i"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-navy-700 hover:text-navy-900"
             >
-              <MessageCircle size={16} /> +62 856-4206-2883
+              <MessageCircle size={16} /> Official WhatsApp Channel
             </a>
           </div>
         </div>

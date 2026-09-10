@@ -7,7 +7,16 @@ import SearchBar from "@/components/home/SearchBar";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata({ title: "Search Scholarships", path: "/search" });
+export const metadata: Metadata = {
+  ...buildMetadata({
+    title: "Search Scholarships",
+    path: "/search",
+  }),
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default async function SearchPage({
   searchParams,
