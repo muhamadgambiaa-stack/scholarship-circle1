@@ -55,7 +55,8 @@ export const allScholarshipSlugsQuery = groq`
 
 export const scholarshipsByCountryQuery = groq`
   *[_type == "scholarship" && country->slug.current == $slug] | order(publishedAt desc) {
-    ${scholarshipCardFields}
+    ${scholarshipCardFields},
+    "categories": categories[]->{name, "slug": slug.current}
   }
 `;
 
