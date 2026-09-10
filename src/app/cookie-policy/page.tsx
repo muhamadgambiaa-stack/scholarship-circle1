@@ -15,6 +15,9 @@ export default function CookiePolicyPage() {
       title="Cookie Policy"
       description="This policy explains what cookies are, how we use them, and how you can manage your preferences."
     >
+      <p><strong>Effective date:</strong> September 11, 2026</p>
+
+
       <h2>What Cookies Are</h2>
       <p>
         Cookies are small text files stored on your device when you visit a website. They help us
