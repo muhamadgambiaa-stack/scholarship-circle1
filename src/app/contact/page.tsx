@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact Us",
-  description: "Get in touch with The Scholarship Circle via email or WhatsApp.",
+  description: "Contact The Scholarship Circle by email and follow our official WhatsApp Channel for scholarship updates.",
   path: "/contact",
 });
 
@@ -15,8 +15,8 @@ export default function ContactPage() {
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Contact" }]} />
       <h1 className="mt-4 font-serif text-3xl font-bold text-navy-900">Contact Us</h1>
       <p className="mt-3 text-navy-500">
-        Have a question about a scholarship, or want to book a free consultation? Reach us
-        directly using either channel below.
+        Have a question about a scholarship? Contact us by email or follow our official
+        WhatsApp Channel for scholarship and study-abroad updates.
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -34,7 +34,7 @@ export default function ContactPage() {
         </a>
 
         <a
-          href="https://wa.me/6285642062883"
+          href="https://www.whatsapp.com/channel/0029VbAizC41NCrYce9fJ03i"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 rounded-lg border border-navy-100 bg-white p-5 shadow-sm hover:shadow-md"
@@ -43,8 +43,8 @@ export default function ContactPage() {
             <MessageCircle size={18} />
           </span>
           <div>
-            <p className="text-sm font-semibold text-navy-900">WhatsApp</p>
-            <p className="text-sm text-navy-500">+62 856-4206-2883</p>
+            <p className="text-sm font-semibold text-navy-900">Official WhatsApp Channel</p>
+            <p className="text-sm text-navy-500">Follow our official channel</p>
           </div>
         </a>
       </div>

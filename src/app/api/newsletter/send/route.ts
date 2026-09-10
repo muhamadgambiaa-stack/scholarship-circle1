@@ -5,29 +5,71 @@ import { Resend } from "resend";
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION!,
+  apiVersion:
+    process.env.NEXT_PUBLIC_SANITY_API_VERSION ||
+    "2024-07-01",
   token: process.env.SANITY_API_WRITE_TOKEN!,
   useCdn: false,
+  perspective: "published",
 });
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
 export async function POST(request: Request) {
   try {
+    const expectedAdminKey =
+      process.env.NEWSLETTER_ADMIN_KEY?.trim();
+
+    const providedAdminKey =
+      request.headers.get("x-admin-key")?.trim();
+
+    if (!expectedAdminKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Newsletter administration is not configured.",
+        },
+        { status: 503 }
+      );
+    }
+
+    if (
+      !providedAdminKey ||
+      providedAdminKey !== expectedAdminKey
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized.",
+        },
+        { status: 401 }
+      );
+    }
+
     const { subject, message } = await request.json();
 
-    if (!subject || !message) {
+    if (
+      typeof subject !== "string" ||
+      typeof message !== "string" ||
+      !subject.trim() ||
+      !message.trim()
+    ) {
       return NextResponse.json(
-        { success: false, message: "Subject and message are required." },
+        {
+          success: false,
+          message: "Subject and message are required.",
+        },
         { status: 400 }
       );
     }
 
-    const subscribers: { email: string }[] = await client.fetch(
-      `*[_type == "subscriber" && status == "active"]{
-        email
-      }`
-    );
+    const subscribers: { email: string }[] =
+      await client.fetch(
+        `*[_type == "subscriber" && status == "active"]{
+          email
+        }`
+      );
 
     if (subscribers.length === 0) {
       return NextResponse.json({
@@ -44,11 +86,11 @@ export async function POST(request: Request) {
           process.env.RESEND_FROM_EMAIL ||
           "newsletter@updates.thescholarshipcircle.com",
         to: subscriber.email,
-        subject,
+        subject: subject.trim(),
         html: `
           <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto">
-            <h2>${subject}</h2>
-            <p>${message.replace(/\n/g, "<br>")}</p>
+            <h2>${subject.trim()}</h2>
+            <p>${message.trim().replace(/\n/g, "<br>")}</p>
 
             <hr>
 
@@ -70,7 +112,7 @@ export async function POST(request: Request) {
       message: `Newsletter sent to ${sent} subscribers.`,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Newsletter send error", error);
 
     return NextResponse.json(
       {

@@ -28,7 +28,7 @@ export function buildMetadata({
     description,
     alternates: { canonical: url },
     openGraph: {
-      title: fullTitle,
+      title: socialTitle,
       description,
       url,
       siteName: SITE_NAME,
@@ -37,7 +37,7 @@ export function buildMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: fullTitle,
+      title: socialTitle,
       description,
       images: image ? [image] : undefined,
     },
