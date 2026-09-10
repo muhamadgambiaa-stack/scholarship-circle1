@@ -8,6 +8,7 @@ export default defineType({
   groups: [
     { name: "content", title: "Content" },
     { name: "details", title: "Scholarship Details" },
+    { name: "verification", title: "Verification" },
     { name: "seo", title: "SEO" },
   ],
 
@@ -209,6 +210,49 @@ export default defineType({
       type: "array",
       group: "details",
       of: [{ type: "block" }],
+    }),
+
+    defineField({
+      name: "officialSourceName",
+      title: "Official Information Source",
+      type: "string",
+      group: "verification",
+      description:
+        "Name the university, government, foundation, research institution, or official provider used to verify this opportunity.",
+      validation: (Rule) =>
+        Rule.required().error(
+          "Add the official organization or provider used to verify this scholarship."
+        ),
+    }),
+
+    defineField({
+      name: "officialSourceUrl",
+      title: "Official Source URL",
+      type: "url",
+      group: "verification",
+      description:
+        "Link to the official scholarship, university, government, foundation, or provider page used to verify the information. Do not use another scholarship blog as the source.",
+      validation: (Rule) =>
+        Rule.required()
+          .uri({
+            scheme: ["http", "https"],
+          })
+          .error(
+            "Add the official source URL used to verify this scholarship."
+          ),
+    }),
+
+    defineField({
+      name: "lastVerifiedAt",
+      title: "Last Verified",
+      type: "date",
+      group: "verification",
+      description:
+        "Enter the date you checked the official source and confirmed the current deadline, eligibility, funding, benefits, and application information.",
+      validation: (Rule) =>
+        Rule.required().error(
+          "Enter the date this scholarship was last verified."
+        ),
     }),
 
     defineField({
