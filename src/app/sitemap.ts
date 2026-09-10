@@ -21,6 +21,7 @@ type TaxonomySitemapDoc = {
   id: string;
   slug: string;
   _updatedAt?: string;
+  hasGuide: boolean;
 };
 
 type SitemapData = {
@@ -54,7 +55,8 @@ const sitemapDataQuery = groq`{
   ] {
     "id": _id,
     "slug": slug.current,
-    _updatedAt
+    _updatedAt,
+    "hasGuide": count(guideContent) > 0
   },
 
   "categories": *[
@@ -62,7 +64,8 @@ const sitemapDataQuery = groq`{
   ] {
     "id": _id,
     "slug": slug.current,
-    _updatedAt
+    _updatedAt,
+    "hasGuide": count(guideContent) > 0
   }
 }`;
 
@@ -255,6 +258,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       data.countries
         .filter(
           (country) =>
+            country.hasGuide ||
             (countryStats.get(country.id)?.count ?? 0) > 0
         )
         .map((country) => {
@@ -273,8 +277,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       data.categories
         .filter(
           (category) =>
-            (categoryStats.get(category.id)?.count ?? 0) >
-            0
+            category.hasGuide ||
+            (categoryStats.get(category.id)?.count ?? 0) > 0
         )
         .map((category) => {
           const stats = categoryStats.get(category.id);
