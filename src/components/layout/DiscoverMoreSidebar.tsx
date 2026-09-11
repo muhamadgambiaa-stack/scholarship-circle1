@@ -84,7 +84,7 @@ export default async function DiscoverMoreSidebar({
 
   return (
     <div className="space-y-7">
-      {!!data.scholarships.length && (
+      {showScholarships && !!data.scholarships.length && (
         <section>
           <SectionHeading title="More Opportunities" />
 
@@ -159,7 +159,7 @@ export default async function DiscoverMoreSidebar({
         </section>
       )}
 
-      {!!data.posts.length && (
+      {showGuides && !!data.posts.length && (
         <section className="border-t border-navy-100 pt-6">
           <SectionHeading title="Useful Guides" />
 
