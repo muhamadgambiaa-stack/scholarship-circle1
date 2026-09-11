@@ -25,6 +25,7 @@ import {
 import Badge from "@/components/ui/Badge";
 import ShareButton from "@/components/ui/ShareButton";
 import VerificationBox from "@/components/scholarship/VerificationBox";
+import DiscoverMoreSidebar from "@/components/layout/DiscoverMoreSidebar";
 
 
 const portableTextComponents: PortableTextComponents = {
@@ -361,19 +362,19 @@ export default function ScholarshipDetail({
             </p>
           </div>
 
-          {/* MOBILE MORE OPPORTUNITIES */}
+          {/* MOBILE DISCOVER MORE */}
           <div className="mt-10 lg:hidden">
-            <MoreOpportunities
-              items={scholarship.moreOpportunities}
+            <DiscoverMoreSidebar
+              excludeScholarshipSlug={scholarship.slug}
             />
           </div>
         </div>
 
-        {/* DESKTOP MORE OPPORTUNITIES */}
+        {/* DESKTOP DISCOVER MORE */}
         <aside className="hidden lg:block">
           <div className="sticky top-20">
-            <MoreOpportunities
-              items={scholarship.moreOpportunities}
+            <DiscoverMoreSidebar
+              excludeScholarshipSlug={scholarship.slug}
             />
           </div>
         </aside>

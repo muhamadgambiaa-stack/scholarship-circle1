@@ -27,6 +27,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import ShareButton from "@/components/ui/ShareButton";
 import ScholarshipCard from "@/components/scholarship/ScholarshipCard";
 import StructuredData from "@/components/seo/StructuredData";
+import DiscoverMoreSidebar from "@/components/layout/DiscoverMoreSidebar";
 
 import {
   articleJsonLd,
@@ -283,7 +284,9 @@ export default async function BlogPostPage({
           ]}
         />
 
-        <header className="mt-5 max-w-3xl">
+        <div className="mt-5 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_310px] lg:gap-12">
+          <div className="min-w-0">
+            <header className="max-w-3xl">
           <h1 className="font-serif text-3xl font-bold leading-tight text-navy-900 sm:text-4xl">
             {post.title}
           </h1>
@@ -437,6 +440,17 @@ export default async function BlogPostPage({
             </div>
           </section>
         )}
+          </div>
+
+          <aside>
+            <div className="lg:sticky lg:top-20">
+              <DiscoverMoreSidebar
+                excludePostSlug={post.slug}
+              />
+            </div>
+          </aside>
+        </div>
+
       </article>
     </>
   );
