@@ -63,9 +63,13 @@ const discoverQuery = groq`{
 export default async function DiscoverMoreSidebar({
   excludeScholarshipSlug,
   excludePostSlug,
+  showScholarships = true,
+  showGuides = true,
 }: {
   excludeScholarshipSlug?: string;
   excludePostSlug?: string;
+  showScholarships?: boolean;
+  showGuides?: boolean;
 }) {
   const today = new Date().toISOString().slice(0, 10);
 
