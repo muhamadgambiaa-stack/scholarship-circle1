@@ -23,6 +23,7 @@ import { deadlineStatus } from "@/lib/utils";
 
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import EditorialGuide from "@/components/ui/EditorialGuide";
+import DiscoverMoreSidebar from "@/components/layout/DiscoverMoreSidebar";
 
 import {
   breadcrumbJsonLd,
@@ -200,101 +201,11 @@ export default async function CountryPage({
         </div>
 
         <aside>
-          <div className="border-t border-navy-100 pt-5">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-navy-900">
-                Scholarship Opportunities
-              </h2>
-
-              {scholarships.length > 0 && (
-                <span className="text-xs text-navy-400">
-                  {scholarships.length}
-                </span>
-              )}
-            </div>
-
-            {scholarships.length > 0 ? (
-              <div className="mt-3 divide-y divide-navy-100">
-                {scholarships.map((scholarship) => (
-                  <CountryOpportunity
-                    key={scholarship._id}
-                    scholarship={scholarship}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="mt-4 text-sm leading-6 text-navy-500">
-                No scholarships for {country.name} yet.
-              </p>
-            )}
+          <div className="lg:sticky lg:top-20">
+            <DiscoverMoreSidebar />
           </div>
         </aside>
       </div>
     </div>
-  );
-}
-
-function CountryOpportunity({
-  scholarship,
-}: {
-  scholarship: ScholarshipCardType;
-}) {
-  const image = urlForImage(scholarship.featuredImage)
-    ?.width(180)
-    .height(135)
-    .url();
-
-  const deadline = deadlineStatus(
-    scholarship.deadline
-  );
-
-  const label =
-    scholarship.primaryCategory ||
-    (scholarship.fundingType
-      ? FUNDING_TYPE_LABELS[scholarship.fundingType]
-      : undefined) ||
-    "Scholarship";
-
-  return (
-    <Link
-      href={`/scholarships/${scholarship.slug}`}
-      className="group flex gap-3 py-4 first:pt-3"
-    >
-      <div className="relative h-[68px] w-[88px] shrink-0 overflow-hidden rounded-md bg-navy-50">
-        {image ? (
-          <Image
-            src={image}
-            alt=""
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-            sizes="88px"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center px-2 text-center text-[10px] text-navy-300">
-            Scholarship
-          </div>
-        )}
-      </div>
-
-      <div className="min-w-0 flex-1">
-        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-navy-400">
-          {label}
-        </p>
-
-        <h3 className="line-clamp-2 text-sm font-semibold leading-[1.35] text-navy-900 transition-colors group-hover:text-navy-600">
-          {scholarship.title}
-        </h3>
-
-        <p
-          className={`mt-1.5 text-[11px] font-medium ${
-            deadline.closed
-              ? "text-red-500"
-              : "text-navy-500"
-          }`}
-        >
-          {deadline.label}
-        </p>
-      </div>
-    </Link>
   );
 }
