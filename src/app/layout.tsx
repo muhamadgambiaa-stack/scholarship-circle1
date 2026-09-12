@@ -10,15 +10,12 @@ import { SITE_URL } from "@/lib/seo";
 const SITE_NAME = "The Scholarship Circle";
 
 const SITE_DESCRIPTION =
-  "The Scholarship Circle helps students discover genuine scholarship opportunities, fully funded scholarships, fellowships, internships, exchange programs, grants, and study abroad opportunities from universities, governments, and international organizations worldwide.";
+  "Discover scholarships, fellowships, internships, exchange programs and study-abroad opportunities for international students worldwide.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
-  title: {
-    default: `${SITE_NAME} | Scholarships Worldwide`,
-    template: `%s | ${SITE_NAME}`,
-  },
+  title: `${SITE_NAME} | Scholarships Worldwide`,
 
   description: SITE_DESCRIPTION,
 
@@ -117,12 +114,19 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     locale: "en_US",
+    images: [
+      {
+        url: `${SITE_URL}/logo.png`,
+        alt: SITE_NAME,
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} | Scholarships Worldwide`,
     description: SITE_DESCRIPTION,
+    images: [`${SITE_URL}/logo.png`],
   },
 
   robots: {
@@ -154,7 +158,6 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
         name: SITE_NAME,
-        alternateName: "Scholarship Circle",
         url: `${SITE_URL}/`,
         description: SITE_DESCRIPTION,
         inLanguage: "en",
@@ -167,7 +170,6 @@ export default function RootLayout({
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
         name: SITE_NAME,
-        alternateName: "Scholarship Circle",
         url: `${SITE_URL}/`,
         description:
           "The Scholarship Circle is an independent scholarship information platform helping students discover genuine scholarship opportunities and reliable study abroad information.",
@@ -212,7 +214,7 @@ export default function RootLayout({
         </Script>
 
         {/* Google WebSite + Organization structured data */}
-        <Script
+        <script
           id="site-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
