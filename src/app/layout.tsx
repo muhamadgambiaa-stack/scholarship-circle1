@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Script from "next/script";
 
 import "./globals.css";
@@ -142,6 +142,7 @@ export const metadata: Metadata = {
   },
 
   other: {
+    "kadam-verification": "kadam7e376e6dd31e02806c76ee459bb347ee",
     "google-adsense-account": "ca-pub-9760558565445583",
   },
 };
@@ -246,3 +247,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+
