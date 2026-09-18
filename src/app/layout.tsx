@@ -142,8 +142,7 @@ export const metadata: Metadata = {
   },
 
   other: {
-    "kadam-verification": "kadam7e376e6dd31e02806c76ee459bb347ee",
-    "google-adsense-account": "ca-pub-9760558565445583",
+"google-adsense-account": "ca-pub-9760558565445583",
   },
 };
 
@@ -247,5 +246,6 @@ export default function RootLayout({
     </html>
   );
 }
+
 
 
