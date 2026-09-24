@@ -86,6 +86,41 @@ export function countryFlag(
     .join("");
 }
 
+
+function summarizeText(value?: string, maxLength = 220): string {
+  const text = shareText(value);
+
+  if (!text) return "";
+
+  if (text.length <= maxLength) return text;
+
+  const shortened = text.slice(0, maxLength);
+  const lastSentence = shortened.lastIndexOf(".");
+
+  return lastSentence > 80
+    ? shortened.slice(0, lastSentence + 1)
+    : `${shortened.trim()}...`;
+}
+
+function summarizeBenefit(value: string): string {
+  let text = shareText(value);
+
+  text = text
+    .replace(/^scholarship recipients (may )?/i, "")
+    .replace(/^eligible international scholarship recipients (may )?/i, "")
+    .replace(/^recipients (may )?/i, "")
+    .replace(/^the scholarship provides /i, "")
+    .replace(/^scholarship recipients receive /i, "")
+    .replace(/^some scholarship schemes may provide /i, "")
+    .replace(/\bwhich is automatically deducted from their monthly stipend\b/i, "")
+    .replace(/\bto help cover their expenses while studying in Indonesia\b/i, "")
+    .replace(/\bdepending on the scholarship scheme awarded to them\b/i, "")
+    .replace(/\bduring their eligible study period\b/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 function deadlineLabel(value?: string): string {
   if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     return "Not specified";
@@ -124,11 +159,11 @@ export function buildScholarshipShare(
     encodeURIComponent(scholarship.slug);
 
   const description =
-    shareText(scholarship.excerpt) ||
-    shareText(scholarship.seoDescription);
+    summarizeText(scholarship.excerpt) ||
+    summarizeText(scholarship.seoDescription);
 
   const benefits = (scholarship.benefits ?? [])
-    .map(shareText)
+    .map(summarizeBenefit)
     .filter(Boolean);
 
   const categories = (scholarship.categories ?? [])
@@ -167,3 +202,4 @@ export function buildScholarshipShare(
     .filter(Boolean)
     .join("\n\n");
 }
+
