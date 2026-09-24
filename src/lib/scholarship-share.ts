@@ -1,4 +1,4 @@
-import {
+﻿import {
   DEGREE_LEVEL_LABELS,
   type Scholarship,
 } from "../types/scholarship";
@@ -103,23 +103,47 @@ function summarizeText(value?: string, maxLength = 220): string {
 }
 
 function summarizeBenefit(value: string): string {
-  let text = shareText(value);
-
-  text = text
-    .replace(/^scholarship recipients (may )?/i, "")
-    .replace(/^eligible international scholarship recipients (may )?/i, "")
-    .replace(/^recipients (may )?/i, "")
-    .replace(/^the scholarship provides /i, "")
-    .replace(/^scholarship recipients receive /i, "")
-    .replace(/^some scholarship schemes may provide /i, "")
-    .replace(/\bwhich is automatically deducted from their monthly stipend\b/i, "")
-    .replace(/\bto help cover their expenses while studying in Indonesia\b/i, "")
-    .replace(/\bdepending on the scholarship scheme awarded to them\b/i, "")
-    .replace(/\bduring their eligible study period\b/i, "")
+  const text = shareText(value)
     .replace(/\s+/g, " ")
     .trim();
 
-  return text.charAt(0).toUpperCase() + text.slice(1);
+  if (!text) return "";
+
+  if (/tuition fee coverage/i.test(text)) {
+    return "Tuition fee coverage.";
+  }
+
+  if (
+    /monthly living allowance/i.test(text) &&
+    !/5,000,000/i.test(text)
+  ) {
+    return "Monthly living allowance.";
+  }
+
+  if (/monthly stipend of IDR 5,000,000/i.test(text)) {
+    return "Monthly stipend: IDR 5,000,000.";
+  }
+
+  if (/UIII Student Dormitory/i.test(text)) {
+    return "UIII Student Dormitory: IDR 1,000,000 monthly deduction.";
+  }
+
+  if (/round-trip economy-class airfare/i.test(text)) {
+    return "Round-trip economy airfare may be provided.";
+  }
+
+  if (/student visa and legal stay permit/i.test(text)) {
+    return "Student visa and legal stay permit support may be provided.";
+  }
+
+  if (/books, research or thesis-related expenses/i.test(text)) {
+    return "Additional support for books, research and thesis expenses.";
+  }
+
+  return text
+    .replace(/\s*[,.]\s*\./g, ".")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 function deadlineLabel(value?: string): string {
   if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -202,4 +226,5 @@ export function buildScholarshipShare(
     .filter(Boolean)
     .join("\n\n");
 }
+
 
