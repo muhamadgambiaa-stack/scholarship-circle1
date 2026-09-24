@@ -15,6 +15,7 @@ import {
 
 import { urlForImage } from "@/sanity/lib/image";
 import { formatDate } from "@/lib/utils";
+import { buildScholarshipShare, shareText } from "@/lib/scholarship-share";
 import {
   DEGREE_LEVEL_LABELS,
   FUNDING_TYPE_LABELS,
@@ -242,7 +243,8 @@ export default function ScholarshipDetail({
           {/* Share */}
           <div className="mt-4">
             <ShareButton
-              title={scholarship.title}
+              title={shareText(scholarship.title)}
+              message={buildScholarshipShare(scholarship)}
               description={
                 scholarship.excerpt ||
                 scholarship.seoDescription ||
