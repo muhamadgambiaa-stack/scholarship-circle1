@@ -12,6 +12,7 @@ import {
 import { groq } from "next-sanity";
 
 import { client } from "@/sanity/lib/client";
+import { urlForImage } from "@/sanity/lib/image";
 import { deadlineStatus } from "@/lib/utils";
 import {
   FUNDING_TYPE_LABELS,
@@ -93,6 +94,12 @@ export default async function DiscoverMoreSidebar({
 
           <div className="divide-y divide-navy-100">
             {data.scholarships.map((scholarship) => {
+              const image = urlForImage(
+                scholarship.featuredImage
+              )
+                ?.width(160)
+                .height(160)
+                .url();
 
               const label =
                 scholarship.primaryCategory ||
@@ -114,13 +121,19 @@ export default async function DiscoverMoreSidebar({
                   className="group flex gap-3 py-3 first:pt-0"
                 >
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-navy-50">
-                    <Image
-                      src="/logo.png"
-                      alt=""
-                      fill
-                      sizes="64px"
-                      className="object-contain p-2"
-                    />
+                    {image ? (
+                      <Image
+                        src={image}
+                        alt=""
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="64px"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center px-1 text-center text-[9px] text-navy-300">
+                        Scholarship
+                      </div>
+                    )}
                   </div>
 
                   <div className="min-w-0 flex-1">
