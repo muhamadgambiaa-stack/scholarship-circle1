@@ -1,3 +1,4 @@
+import ScholarshipBrandHeader from "@/components/scholarship/ScholarshipBrandHeader";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -98,10 +99,6 @@ export default function ScholarshipDetail({
 }: {
   scholarship: Scholarship;
 }) {
-  const img = urlForImage(scholarship.featuredImage)
-    ?.width(1200)
-    .height(675)
-    .url();
 
   const degreeLevels = scholarship.degreeLevels ?? [];
   const visibleDegreeLevels = degreeLevels.slice(0, 3);
@@ -151,22 +148,9 @@ export default function ScholarshipDetail({
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_310px]">
         {/* MAIN ARTICLE */}
         <div className="min-w-0">
-          {/* Featured Image */}
-          {img && (
-            <div className="relative mb-5 h-[220px] w-full overflow-hidden rounded-xl bg-navy-50 sm:h-[300px] lg:h-[360px]">
-              <Image
-                src={img}
-                alt={
-                  scholarship.featuredImage?.alt ||
-                  scholarship.title
-                }
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 70vw"
-              />
-            </div>
-          )}
+          <div className="mb-5 overflow-hidden rounded-xl">
+            <ScholarshipBrandHeader />
+          </div>
 
           {/* Funding + Degree Levels */}
           <div className="mb-4 flex flex-wrap gap-1.5">

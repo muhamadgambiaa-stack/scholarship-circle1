@@ -1,7 +1,6 @@
-﻿import Link from "next/link";
-import Image from "next/image";
+import Link from "next/link";
+import ScholarshipBrandHeader from "@/components/scholarship/ScholarshipBrandHeader";
 
-import { urlForImage } from "@/sanity/lib/image";
 import {
   DEGREE_LEVEL_LABELS,
   FUNDING_TYPE_LABELS,
@@ -16,10 +15,6 @@ export default function ScholarshipCard({
 }: {
   scholarship: ScholarshipCardType;
 }) {
-  const img = urlForImage(scholarship.featuredImage)
-    ?.width(600)
-    .height(338)
-    .url();
 
   const deadline = deadlineStatus(scholarship.deadline);
 
@@ -36,30 +31,14 @@ export default function ScholarshipCard({
         href={`/scholarships/${scholarship.slug}`}
         className="flex h-full flex-col"
       >
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-navy-50">
-          {img ? (
-            <Image
-              src={img}
-              alt={scholarship.title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-sm text-navy-300">
-              No image
-            </div>
-          )}
-
+        <ScholarshipBrandHeader>
           {scholarship.fundingType && (
-            <span className="absolute left-3 top-3">
-              <Badge tone="gold">
-                {FUNDING_TYPE_LABELS[scholarship.fundingType] ??
-                  scholarship.fundingType}
-              </Badge>
-            </span>
+            <Badge tone="gold">
+              {FUNDING_TYPE_LABELS[scholarship.fundingType] ??
+                scholarship.fundingType}
+            </Badge>
           )}
-        </div>
+        </ScholarshipBrandHeader>
 
         <div className="flex flex-1 flex-col p-3.5 sm:p-4">
           <h3 className="line-clamp-2 font-serif text-base font-semibold leading-snug text-navy-900 transition-colors group-hover:text-navy-700 sm:text-lg">
@@ -93,6 +72,10 @@ export default function ScholarshipCard({
               )}
             </div>
           )}
+
+          <span className="mt-4 text-sm font-semibold text-navy-800 underline decoration-gold-500 underline-offset-4">
+            Read full details
+          </span>
 
           <p
             className={`mt-auto pt-3 text-xs font-medium ${
