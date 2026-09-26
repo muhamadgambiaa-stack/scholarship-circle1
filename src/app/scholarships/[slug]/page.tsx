@@ -21,9 +21,8 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
+export const dynamic = "auto";
+export const revalidate = 300;
 export async function generateStaticParams() {
   const slugs = await client
     .fetch<string[]>(allScholarshipSlugsQuery)

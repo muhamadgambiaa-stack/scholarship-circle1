@@ -11,9 +11,8 @@ import WhatsAppChannel from "@/components/home/WhatsAppChannel";
 import ConsultationCTA from "@/components/home/ConsultationCTA";
 import Newsletter from "@/components/home/Newsletter";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
+export const dynamic = "auto";
+export const revalidate = 300;
 export default async function HomePage() {
   const data = await client.fetch<HomepageData>(homepageQuery).catch(
     () =>

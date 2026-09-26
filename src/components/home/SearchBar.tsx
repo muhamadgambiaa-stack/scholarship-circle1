@@ -1,11 +1,11 @@
-﻿"use client";
+"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { cx } from "@/lib/utils";
 
-export default function SearchBar({
+function SearchBarContent({
   variant = "default",
 }: {
   variant?: "hero" | "default";
@@ -69,5 +69,32 @@ export default function SearchBar({
         Search
       </button>
     </form>
+  );
+}
+
+export default function SearchBar({
+  variant = "default",
+}: {
+  variant?: "hero" | "default";
+}) {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className={cx(
+            "h-[52px] rounded-lg bg-white p-1.5",
+            variant === "hero"
+              ? "shadow-md"
+              : "border border-navy-100 shadow-sm"
+          )}
+          role="status"
+          aria-label="Loading search"
+        >
+          <span className="sr-only">Loading search...</span>
+        </div>
+      }
+    >
+      <SearchBarContent variant={variant} />
+    </Suspense>
   );
 }

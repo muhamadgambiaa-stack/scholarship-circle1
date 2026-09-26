@@ -10,9 +10,8 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import DiscoverMoreSidebar from "@/components/layout/DiscoverMoreSidebar";
 import { buildMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
+export const dynamic = "auto";
+export const revalidate = 300;
 export const metadata: Metadata = buildMetadata({
   title: "All Scholarships",
   description:
