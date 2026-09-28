@@ -351,6 +351,7 @@ export default function ScholarshipDetail({
           <div className="mt-10 max-w-3xl border-t border-navy-100 pt-8">
             <a
               href={scholarship.applicationLink}
+              data-analytics-action="apply"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary flex w-full items-center justify-center sm:w-auto sm:px-8"
