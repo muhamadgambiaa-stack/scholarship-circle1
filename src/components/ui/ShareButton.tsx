@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
+import { trackAction } from "@/lib/analytics/track";
 
 export default function ShareButton({
   title,
@@ -43,6 +44,7 @@ export default function ShareButton({
         navigator.share
       ) {
         await navigator.share(shareData);
+        trackAction("share");
         return;
       }
     } catch (error) {
@@ -62,6 +64,7 @@ export default function ShareButton({
         navigator.clipboard?.writeText
       ) {
         await navigator.clipboard.writeText(copyValue);
+        trackAction("copy");
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
         return;
@@ -104,6 +107,7 @@ export default function ShareButton({
       {message && (
         <a
           href={`https://wa.me/?text=${encodeURIComponent(message)}`}
+          onClick={() => trackAction("whatsapp")}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Share ${title} on WhatsApp`}

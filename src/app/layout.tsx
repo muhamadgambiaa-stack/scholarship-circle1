@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ActionTracking from "@/components/analytics/ActionTracking";
 import { SITE_URL } from "@/lib/seo";
 
 const SITE_NAME = "The Scholarship Circle";
@@ -172,6 +173,7 @@ export default function RootLayout({
         </noscript>
 
         <Header />
+        <ActionTracking />
 
         <main className="flex-1">{children}</main>
 
@@ -180,6 +182,5 @@ export default function RootLayout({
     </html>
   );
 }
-
 
 
