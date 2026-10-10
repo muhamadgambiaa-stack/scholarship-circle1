@@ -13,6 +13,7 @@ const links = [
   { href: "/countries", label: "Countries" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
+  { href: "/volunteer", label: "Volunteer" },
   { href: "/founder", label: "Founder" },
   { href: "/contact", label: "Contact" },
 ];
