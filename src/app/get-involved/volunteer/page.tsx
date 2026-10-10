@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "Volunteer with The Scholarship Circle",
   description:
     "Apply to volunteer with The Scholarship Circle. Contribute to scholarship research, writing, design, community, or growth.",
-  alternates: { canonical: "/volunteer" },
+  alternates: { canonical: "/get-involved/volunteer" },
   openGraph: {
     title: "Volunteer with The Scholarship Circle",
     description:
       "Join the team behind The Scholarship Circle. Research, write, design, or help us grow.",
-    url: "/volunteer",
+    url: "/get-involved/volunteer",
     type: "website",
   },
 };
@@ -20,7 +20,7 @@ export default function VolunteerPage() {
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <header className="mb-10">
         <p className="text-sm font-semibold uppercase tracking-wide text-gold-600">
-          Get involved
+          Volunteer
         </p>
         <h1 className="mt-2 font-serif text-3xl font-bold text-navy-900 sm:text-4xl">
           Volunteer with The Scholarship Circle

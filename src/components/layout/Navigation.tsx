@@ -13,7 +13,7 @@ const links = [
   { href: "/countries", label: "Countries" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
-  { href: "/volunteer", label: "Volunteer" },
+  { href: "/get-involved", label: "Get Involved" },
   { href: "/founder", label: "Founder" },
   { href: "/contact", label: "Contact" },
 ];
@@ -95,3 +95,4 @@ export default function Navigation() {
     </>
   );
 }
+
