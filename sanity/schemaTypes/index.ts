@@ -8,6 +8,7 @@ import founderPage from "./founderPage";
 import contactPage from "./contactPage";
 import volunteerApplication from "./volunteerApplication";
 import partnershipApplication from "./partnershipApplication";
+import volunteerSubmission from "./volunteerSubmission";
 
 export const schemaTypes = [
   scholarship,
@@ -20,5 +21,6 @@ export const schemaTypes = [
   contactPage,
   volunteerApplication,
   partnershipApplication,
+  volunteerSubmission,
 ];
 
