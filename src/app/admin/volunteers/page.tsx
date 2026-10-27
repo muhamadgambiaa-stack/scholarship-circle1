@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 interface Applicant { id: string; type: string; name: string | null; email: string | null; createdAt: string }
+interface Submission { id: string; type: "scholarship" | "post"; title: string; volunteerName: string; createdAt: string; status: "published" | "pending" | "removed" }
 interface Volunteer { id: string; email: string; name: string; status: "invited" | "active" | "suspended"; hasPassword: boolean; createdAt: string; suspendedReason?: string }
 
 const box = "w-full rounded-lg border p-2.5 text-sm";
@@ -12,6 +13,7 @@ export default function AdminVolunteersPage() {
   const [key, setKey] = useState("");
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -30,11 +32,12 @@ export default function AdminVolunteersPage() {
   async function load() {
     if (!key.trim()) return setNotice("Enter the admin key first.");
     setBusy(true);
-    const [a, v] = await Promise.all([call("/api/admin/applicants"), call("/api/admin/volunteers")]);
+    const [a, v, sub] = await Promise.all([call("/api/admin/applicants"), call("/api/admin/volunteers"), call("/api/admin/submissions")]);
     setBusy(false);
     if (a.ok) setApplicants(a.data.applicants);
     if (v.ok) setVolunteers(v.data.volunteers);
-    const problems = [!a.ok && `Applicants: ${a.data.message}`, !v.ok && `Volunteers: ${v.data.message}`].filter(Boolean);
+    if (sub.ok) setSubmissions(sub.data.submissions);
+    const problems = [!a.ok && `Applicants: ${a.data.message}`, !v.ok && `Volunteers: ${v.data.message}`, !sub.ok && `Submissions: ${sub.data.message}`].filter(Boolean);
     setNotice(problems.length ? (problems as string[]).join(" | ") : "Loaded.");
   }
 
@@ -74,6 +77,36 @@ export default function AdminVolunteersPage() {
         <button className="rounded-lg bg-blue-700 px-5 text-sm text-white disabled:opacity-60" onClick={load} disabled={busy}>Load</button>
       </div>
       {notice && <p className="mb-6 rounded-md bg-gray-100 p-3 text-sm">{notice}</p>}
+
+      <section className="mb-10">
+        <h2 className="mb-1 text-xl font-semibold">Volunteer submissions ({submissions.length})</h2>
+        <p className="mb-3 text-sm text-gray-500">Open one in Studio, check it, add related content and SEO if you like, then press Publish to put it on the website. Delete the draft to reject it.</p>
+        {submissions.length === 0 ? (
+          <p className="text-sm text-gray-500">No submissions yet.</p>
+        ) : (
+          <div className="overflow-x-auto rounded-lg border">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-gray-50 text-xs uppercase text-gray-500"><tr><th className="p-3">Title</th><th className="p-3">Type</th><th className="p-3">Volunteer</th><th className="p-3">Date</th><th className="p-3">Status</th><th className="p-3" /></tr></thead>
+              <tbody>
+                {submissions.map((s) => (
+                  <tr key={s.id} className="border-t">
+                    <td className="p-3">{s.title}</td>
+                    <td className="p-3">{s.type === "scholarship" ? "Scholarship" : "Blog post"}</td>
+                    <td className="p-3">{s.volunteerName}</td>
+                    <td className="p-3">{new Date(s.createdAt).toLocaleDateString("en-GB")}</td>
+                    <td className="p-3">{s.status === "pending" ? "Pending review" : s.status === "published" ? "Published" : "Removed"}</td>
+                    <td className="p-3 text-right whitespace-nowrap">
+                      {s.status !== "removed" && (
+                        <a className={btn} href={`/studio/intent/edit/id=${s.id};type=${s.type}/`} target="_blank" rel="noreferrer">Open in Studio</a>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
       <section className="mb-10">
         <h2 className="mb-3 text-xl font-semibold">Applications ({applicants.length})</h2>

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { SUBMISSION_CATEGORIES } from "@/lib/volunteer/config";
 
 const input = "w-full rounded-md border border-navy-200 px-4 py-2.5 text-sm outline-none focus:border-navy-500";
 
@@ -117,45 +116,5 @@ export function LogoutButton() {
     >
       Sign out
     </button>
-  );
-}
-
-export function SubmissionForm() {
-  const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState(SUBMISSION_CATEGORIES[0].value);
-  const [link, setLink] = useState("");
-  const [body, setBody] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [state, setState] = useState({ error: false, text: "" });
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setBusy(true);
-    setState({ error: false, text: "" });
-    const r = await post("/api/volunteer/submissions", { title, category, link, body });
-    setBusy(false);
-    setState({ error: !r.ok, text: r.message });
-    if (r.ok) {
-      setTitle("");
-      setLink("");
-      setBody("");
-      router.refresh();
-    }
-  }
-
-  return (
-    <form onSubmit={submit} className="mt-4 space-y-4">
-      <input className={input} required maxLength={150} placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <select className={input} value={category} onChange={(e) => setCategory(e.target.value)}>
-        {SUBMISSION_CATEGORIES.map((c) => (
-          <option key={c.value} value={c.value}>{c.title}</option>
-        ))}
-      </select>
-      <input className={input} type="url" placeholder="Official link (optional) https://..." value={link} onChange={(e) => setLink(e.target.value)} />
-      <textarea className={input} rows={10} required minLength={20} maxLength={8000} placeholder="Write your content here. Include deadlines, eligibility and the official source." value={body} onChange={(e) => setBody(e.target.value)} />
-      <Message error={state.error} text={state.text} />
-      <button className="btn-primary" disabled={busy}>{busy ? "Submitting..." : "Submit for review"}</button>
-    </form>
   );
 }

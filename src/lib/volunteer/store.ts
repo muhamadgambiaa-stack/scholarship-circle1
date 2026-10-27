@@ -95,3 +95,31 @@ export async function rlReset(key: string) {
 export function clientIp(request: Request) {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 }
+
+// ---- volunteer submissions (the content lives in Sanity; this only tracks who sent what) ----
+export interface SubmissionRecord {
+  id: string; // Sanity document id WITHOUT the "drafts." prefix
+  type: "scholarship" | "post";
+  title: string;
+  volunteerId: string;
+  volunteerName: string;
+  createdAt: string;
+}
+
+export async function saveSubmission(r: SubmissionRecord) {
+  const d = db();
+  await d.set(`volsub:${r.id}`, r);
+  await d.sadd("volsub:index", r.id);
+  await d.sadd(`volsubs:${r.volunteerId}`, r.id);
+}
+
+export async function listSubmissionRecords(volunteerId?: string): Promise<SubmissionRecord[]> {
+  const d = db();
+  const ids = (await d.smembers(volunteerId ? `volsubs:${volunteerId}` : "volsub:index")) as string[];
+  if (!ids.length) return [];
+  const rows = await d.mget<(SubmissionRecord | null)[]>(...ids.map((id) => `volsub:${id}`));
+  return rows
+    .filter((r): r is SubmissionRecord => !!r)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, 200);
+}

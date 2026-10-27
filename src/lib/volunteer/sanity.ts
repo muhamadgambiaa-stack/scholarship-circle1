@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { createClient } from "next-sanity";
 import { APPLICATION_TYPES } from "./config";
 
@@ -17,42 +18,59 @@ export function sanityWrite() {
   });
 }
 
-export interface SubmissionRow {
-  id: string;
-  title: string;
-  category: string;
-  createdAt: string;
-  reviewNote?: string;
-  published: boolean;
+export interface Option { _id: string; name: string }
+
+/** Countries and categories a volunteer can pick, read from your real Sanity content. */
+export async function getFormOptions(): Promise<{ countries: Option[]; categories: Option[] }> {
+  const c = sanityWrite();
+  const [countries, categories] = await Promise.all([
+    c.fetch<Option[]>(`*[_type == "country" && !(_id in path("drafts.**"))] | order(name asc){ _id, name }`),
+    c.fetch<Option[]>(`*[_type == "category" && !(_id in path("drafts.**"))] | order(name asc){ _id, name }`),
+  ]);
+  return { countries, categories };
 }
 
-/** Submissions are stored as Sanity DRAFTS, which the public API cannot read.
- *  Publishing one in the Studio = approving it. */
-export async function listSubmissions(volunteerId: string): Promise<SubmissionRow[]> {
-  const rows = await sanityWrite().fetch<
-    { _id: string; title: string; category: string; _createdAt: string; reviewNote?: string }[]
-  >(
-    `*[_type == "volunteerSubmission" && volunteerId == $id] | order(_createdAt desc)[0...100]{
-      _id, title, category, _createdAt, reviewNote
-    }`,
-    { id: volunteerId }
-  );
+export type SubmissionStatus = "published" | "pending" | "removed";
 
-  const byBase = new Map<string, SubmissionRow>();
-  for (const r of rows) {
-    const isDraft = r._id.startsWith("drafts.");
-    const base = r._id.replace(/^drafts\./, "");
-    const existing = byBase.get(base);
-    byBase.set(base, {
-      id: base,
-      title: existing?.title ?? r.title,
-      category: existing?.category ?? r.category,
-      createdAt: existing?.createdAt ?? r._createdAt,
-      reviewNote: r.reviewNote || existing?.reviewNote,
-      published: (existing?.published ?? false) || !isDraft,
-    });
-  }
-  return [...byBase.values()];
+/** Volunteer content is saved as a Sanity DRAFT. Published in Studio = approved.
+ *  Draft deleted without publishing = removed by a reviewer. */
+export async function submissionStatuses(ids: string[]): Promise<Record<string, SubmissionStatus>> {
+  const out: Record<string, SubmissionStatus> = {};
+  if (!ids.length) return out;
+  const found = new Set(
+    await sanityWrite().fetch<string[]>(`*[_id in $ids]._id`, { ids: ids.flatMap((id) => [id, `drafts.${id}`]) })
+  );
+  for (const id of ids) out[id] = found.has(id) ? "published" : found.has(`drafts.${id}`) ? "pending" : "removed";
+  return out;
+}
+
+export async function uploadImage(buffer: Buffer, filename: string, contentType: string) {
+  const asset = await sanityWrite().assets.upload("image", buffer, { filename, contentType });
+  return asset._id;
+}
+
+export function slugify(s: string) {
+  return (
+    s
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80) || "untitled"
+  );
+}
+
+export async function uniqueSlug(type: string, title: string) {
+  const base = slugify(title);
+  const n = await sanityWrite().fetch<number>(`count(*[_type == $t && slug.current == $s])`, { t: type, s: base });
+  return n === 0 ? base : `${base}-${randomUUID().slice(0, 4)}`;
+}
+
+export async function referencesExist(ids: string[], type: string) {
+  if (!ids.length) return true;
+  const n = await sanityWrite().fetch<number>(`count(*[_id in $ids && _type == $t])`, { ids, t: type });
+  return n === new Set(ids).size;
 }
 
 export interface ApplicantRow {
@@ -76,11 +94,5 @@ export async function listApplicants(): Promise<ApplicantRow[]> {
     }`,
     { types: APPLICATION_TYPES }
   );
-  return rows.map((r) => ({
-    id: r._id,
-    type: r._type,
-    name: r.name,
-    email: r.email,
-    createdAt: r._createdAt,
-  }));
+  return rows.map((r) => ({ id: r._id, type: r._type, name: r.name, email: r.email, createdAt: r._createdAt }));
 }
