@@ -9,15 +9,6 @@ const nextConfig = {
   },
   compress: true,
   poweredByHeader: false,
-  async redirects() {
-    return [
-      {
-        source: '/volunteer',
-        destination: '/get-involved',
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;
