@@ -1,98 +1,86 @@
 import { NextResponse } from "next/server";
-import { createClient } from "next-sanity";
-import { Resend } from "resend";
+import { SITE_URL } from "@/lib/volunteer/config";
+import { sendNoReply } from "@/lib/volunteer/mail";
+import { clientIp, rlBlocked, rlHit } from "@/lib/volunteer/store";
+import { EMAIL_PATTERN, getNewsletterClient, normalizeEmail, signToken, subscriberId } from "@/lib/newsletter";
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const DEFAULT_FROM = "newsletter@updates.thescholarshipcircle.com";
-
-function normalizeEmail(value: string) {
-  return value.trim().toLowerCase();
-}
-
-function getSanityWriteClient() {
-  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_PROJECT_ID || "";
-  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET || "production";
-  const token = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN;
-
-  if (!projectId || !dataset || !token) {
-    return null;
-  }
-
-  return createClient({
-    projectId,
-    dataset,
-    apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-07-01",
-    useCdn: false,
-    token,
-    perspective: "published",
-  });
-}
+// Same answer whether or not the address is already on the list, so the form cannot be used
+// to find out who subscribes.
+const CHECK_INBOX = {
+  success: true,
+  message: "Almost done! We sent a confirmation email. Please open it and click the button to finish subscribing (check spam too).",
+};
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const email = normalizeEmail(body?.email || "");
+    const body = await request.json().catch(() => ({}));
+    const email = normalizeEmail(String(body?.email || ""));
 
-    if (!EMAIL_PATTERN.test(email)) {
-      return NextResponse.json(
-        { success: false, message: "Please enter a valid email address." },
-        { status: 400 }
-      );
+    if (!EMAIL_PATTERN.test(email) || email.length > 200) {
+      return NextResponse.json({ success: false, message: "Please enter a valid email address." }, { status: 400 });
     }
 
-    const client = getSanityWriteClient();
-    if (!client) {
+    const client = getNewsletterClient();
+    if (!client || !process.env.RESEND_API_KEY) {
       return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Newsletter signup is not configured yet. Please add Sanity write credentials and Resend settings.",
-        },
+        { success: false, message: "Newsletter signup is not configured yet. Please try again later." },
         { status: 500 }
       );
     }
 
-    const existingSubscriber = await client.fetch<{ _id: string; status: string } | null>(
+    // Abuse limits (if the limiter store is unreachable, signup still works).
+    try {
+      const ipKey = `nl-ip:${clientIp(request)}`;
+      if (await rlBlocked(ipKey, 10)) {
+        return NextResponse.json({ success: false, message: "Too many attempts. Please try again later." }, { status: 429 });
+      }
+      await rlHit(ipKey, 3600);
+    } catch (e) {
+      console.error("Newsletter limiter unavailable", e);
+    }
+
+    const existing = await client.fetch<{ _id: string; status: string } | null>(
       `*[_type == "subscriber" && email == $email][0]{_id, status}`,
       { email }
     );
 
-    if (existingSubscriber?.status === "active") {
-      return NextResponse.json(
-        { success: false, message: "This email is already subscribed." },
-        { status: 409 }
-      );
+    if (existing?.status === "active") return NextResponse.json(CHECK_INBOX);
+
+    const now = new Date().toISOString();
+    if (!existing) {
+      await client.createIfNotExists({
+        _id: subscriberId(email),
+        _type: "subscriber",
+        email,
+        status: "pending",
+        subscribedAt: now,
+      });
+    } else if (existing.status === "unsubscribed") {
+      await client.patch(existing._id).set({ status: "pending", subscribedAt: now }).commit();
     }
 
-    if (existingSubscriber && existingSubscriber.status === "unsubscribed") {
-      await client
-        .patch(existingSubscriber._id)
-        .set({ status: "active", subscribedAt: new Date().toISOString() })
-        .commit();
-
-      return NextResponse.json({ success: true, message: "You are subscribed again." });
+    // At most 3 confirmation emails per address per day, so nobody can be mail-bombed.
+    try {
+      const emailKey = `nl-confirm:${email}`;
+      if (await rlBlocked(emailKey, 3)) return NextResponse.json(CHECK_INBOX);
+      await rlHit(emailKey, 86400);
+    } catch (e) {
+      console.error("Newsletter limiter unavailable", e);
     }
 
-    await client.create({
-      _type: "subscriber",
-      email,
-      subscribedAt: new Date().toISOString(),
-      status: "active",
+    const token = signToken("confirm", email, 60 * 60 * 24 * 7);
+    await sendNoReply({
+      to: email,
+      subject: "Confirm your subscription to The Scholarship Circle",
+      heading: "One more step",
+      paragraphs: [
+        "Thanks for your interest in The Scholarship Circle. Please confirm your email address to start receiving scholarship and study-abroad updates.",
+        "If you did not request this, you can ignore this email and you will not be subscribed.",
+      ],
+      button: { label: "Confirm my subscription", url: `${SITE_URL}/api/newsletter/confirm?token=${token}` },
     });
 
-    const resendApiKey = process.env.RESEND_API_KEY;
-    if (resendApiKey) {
-      const resend = new Resend(resendApiKey);
-      await resend.emails.send({
-        from: `The Scholarship Circle <${process.env.RESEND_FROM_EMAIL || DEFAULT_FROM}>`,
-        to: [email],
-        subject: "Welcome to The Scholarship Circle",
-        html: `<p>Hello,</p><p>Thanks for subscribing to The Scholarship Circle. You will now receive updates about scholarships and study-abroad opportunities.</p><p>To unsubscribe at any time, visit <a href="${process.env.NEXT_PUBLIC_SITE_URL || "https://thescholarshipcircle.com"}/api/newsletter/unsubscribe?email=${encodeURIComponent(email)}">this link</a>.</p>`,
-        text: `Hello,\n\nThanks for subscribing to The Scholarship Circle. You will now receive updates about scholarships and study-abroad opportunities.\n\nTo unsubscribe at any time, visit ${process.env.NEXT_PUBLIC_SITE_URL || "https://thescholarshipcircle.com"}/api/newsletter/unsubscribe?email=${encodeURIComponent(email)}`,
-      });
-    }
-
-    return NextResponse.json({ success: true, message: "Thanks for subscribing!" });
+    return NextResponse.json(CHECK_INBOX);
   } catch (error) {
     console.error("Newsletter subscribe error", error);
     return NextResponse.json(

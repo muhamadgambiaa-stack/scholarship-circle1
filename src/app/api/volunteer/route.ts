@@ -1,5 +1,6 @@
 ﻿import { NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
+import { sendReceipt } from "@/lib/volunteer/receipt";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -191,6 +192,8 @@ export async function POST(req: Request) {
     );
     return jsonError(500, "We could not submit your application right now.");
   }
+
+  await sendReceipt(req, emailRaw, fullName, "volunteer");
 
   return NextResponse.json({ ok: true });
 }

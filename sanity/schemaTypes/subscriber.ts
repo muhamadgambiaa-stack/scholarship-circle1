@@ -24,6 +24,7 @@ export default defineType({
       initialValue: "active",
       options: {
         list: [
+          { title: "Pending confirmation", value: "pending" },
           { title: "Active", value: "active" },
           { title: "Unsubscribed", value: "unsubscribed" },
         ],

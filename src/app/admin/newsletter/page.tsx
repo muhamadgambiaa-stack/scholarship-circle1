@@ -6,9 +6,10 @@ export default function NewsletterPage() {
   const [adminKey, setAdminKey] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [testEmail, setTestEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function sendNewsletter() {
+  async function send(test: boolean) {
     if (!adminKey.trim()) {
       alert("Enter your admin key.");
       return;
@@ -16,6 +17,15 @@ export default function NewsletterPage() {
 
     if (!subject.trim() || !message.trim()) {
       alert("Subject and message are required.");
+      return;
+    }
+
+    if (test && !testEmail.trim()) {
+      alert("Enter the email address to send the test to.");
+      return;
+    }
+
+    if (!test && !window.confirm("Send this newsletter to ALL active subscribers now? This cannot be undone.")) {
       return;
     }
 
@@ -31,6 +41,7 @@ export default function NewsletterPage() {
         body: JSON.stringify({
           subject: subject.trim(),
           message: message.trim(),
+          ...(test ? { testEmail: testEmail.trim() } : {}),
         }),
       });
 
@@ -58,7 +69,7 @@ export default function NewsletterPage() {
       </h1>
 
       <p className="mb-8 text-sm text-gray-500">
-        This dashboard requires the private newsletter admin key.
+        This dashboard requires the private admin key. Every email includes an unsubscribe link. Send yourself a test first.
       </p>
 
       <div className="space-y-6">
@@ -104,12 +115,36 @@ export default function NewsletterPage() {
           />
         </div>
 
+        <div className="rounded-lg border p-4">
+          <label className="mb-2 block font-semibold">
+            Send a test first
+          </label>
+
+          <div className="flex flex-wrap gap-3">
+            <input
+              type="email"
+              className="min-w-[16rem] flex-1 rounded-lg border p-3"
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+              placeholder="your@email.com"
+            />
+
+            <button
+              onClick={() => send(true)}
+              disabled={loading}
+              className="rounded-lg border border-blue-700 px-5 py-3 text-blue-700 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Send test
+            </button>
+          </div>
+        </div>
+
         <button
-          onClick={sendNewsletter}
+          onClick={() => send(false)}
           disabled={loading}
           className="rounded-lg bg-blue-700 px-6 py-3 text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Sending..." : "Send Newsletter"}
+          {loading ? "Sending..." : "Send to all subscribers"}
         </button>
       </div>
     </main>
